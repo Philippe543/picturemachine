@@ -1,26 +1,27 @@
 <?php
 require("../inc/init.inc.php");
+/*
+Gestionphoto.php est accessible à tous les utilsateurs enregistrés, Les simples users ont accès à leurs photos et les admins à toutes les photos stockées
 
 
-//Restriction d'accès, si l'utilisateur n'est pas admin alors il ne doit pas accéder à cette page
+Il faut que je reprenne une partie des contrôles d'anciennement index.php (que j'ai copié dans boutique.php) car bien entendu le controle de la requete par tags se fait via l'affichage...Je dois attendre d'avoir un affichage d'index.php validé pour continuer la gestion des tags.
 
+*/
+
+//Restriction d'accès, si l'utilisateur n'est pas CONNECTE alors il ne doit pas accéder à cette page
 if(!utilisateur_est_connecte())
 {
 	header("location:../connexion.php");
 	exit(); //permet d'arrêter l'exécution du script au cas où une persnne malveillante ferait des injections via GET
 }
 
+// SUPPRESSION
 
 // Récupération de l'ID de l'utilisateur
 ///  Il faut récupérer l'id de l'utilisateur et le mettre dans la table.
 
-
-
-
-
 if(isset($_GET['action']) && $_GET['action'] == 'suppression' && !empty($_GET['id']) && is_numeric($_GET['id']))
 {
-	// is_numeric permet de savoir si l'information esr bien une valeur numérique sans tenir compte de son type (les informations provenant de GET et de POST sont toujours de type  string)
 	$id = $_GET['id'];
 	// on fait une requête pour récupérer les informations de l'article afin de connaître la photo pour la supprimer.
 	$photo_a_supprimer=$pdo->prepare("SELECT * FROM pictures WHERE id =:id");
@@ -67,7 +68,7 @@ $message="";
 $status="";
 $lastId="";
 //*********************************************************
-// RECUPERATION DES INFORMATIONS D'UNE PHOTO A MODIFIER
+// RECUPERATION DES INFORMATIONS D'UNE PHOTO A MODIFIER - GESTION DES PHOTOS
 //********************************************************
 
 
@@ -89,12 +90,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification' && !empty($_GET['
 	$city = $photo_actuel['city'];
 	// on récupère la photo de l'article dans une nouvelle variable
 	$photo_actuelle = $photo_actuel['photo'];
-
-	// keywords n'est aps une colonne de la table pictures
-	//$keywords=$photo_actuel['keywords'];
 }
 
-//var_dump($message.'test1', $erreur,$id);
 
 
 
@@ -108,14 +105,11 @@ if(isset($_POST['id']) &&
 isset($_POST['title']) && 
 isset($_POST['header']) && 
 isset($_POST['content']) && 
-//isset($_POST['date_record']) && 
 isset($_POST['date_picture']) && 
 isset($_POST['country']) && 
 isset($_POST['city']) &&
 isset($_POST['keywords']))
 {
-	
-var_dump($message.'test2', $erreur);
 
 	//le formulaire a été validé, on place dans ces variables, les saisies correspondantes.
 	$id = $_POST['id'];
@@ -131,26 +125,14 @@ var_dump($message.'test2', $erreur);
 
 	var_dump($message.'test3', $erreur,$id);
 //*************************************************************************************************************
-// FIN ENREGISTREMENT DES PRODUITS
+// FIN GESTION DES PHOTOS ?? PAS VRAIMENT
 //*************************************************************************************************************	
 	
 
-// Contrôle sur la disponibilité du reference en BDD si on est dans le cas d'un ajout car lors de la modification, la référence existera toujours.
-			
-			/*
-			$verif_ref =$pdo->prepare("SELECT * FROM picture WHERE reference =:reference");
-			$verif_ref->bindParam(":reference", $reference, PDO::PARAM_STR);
-			$verif_ref->execute();
-			
-			
-			
-			if($verif_ref->rowCount() > 0  && isset($_GET['action']) && $_GET['action'] == 'ajout') 
-			{
-				//si l'on obtient au moins 1 ligne de résultat alors le pseudo est déjà pris.
-				$message .= '<div class="alert alert-danger" role="alert" style="margin-top:20px;">Attention, la référence est déjà utilisé.<br />Veuillez vérifier votre référence</div>';
-				$erreur = true;
-			}
-			*/
+//**
+//	CONTROLE DES ERREURS DANS LE FORMULAIRE
+//**
+
 			
 			// vérification si le titre n'est pas vide
 			if(empty($title))
@@ -162,35 +144,36 @@ var_dump($message.'test2', $erreur);
 			//Récupération de l'ancienne photo dans le cas d'une modification
 			if(isset($_GET['action']) && $_GET['action'] =="modification")
 			{
+				// /!\ Je ne vois pas où est récupéré le $_POST['ancienne_photo'] peut-être dans index.php ??
+				// Je ne comprends pas - A VOIR MARDI
 				if(isset($_POST['ancienne_photo']))
 				{
 					$photo_bdd=$_POST['ancienne_photo'];
 				}
 			}
-			
-			var_dump($message.'test3', $erreur);
-			
+						
 			// vérification si l'utilisateur a chargé une image
 			if(!empty($_FILES['photo']['name']))
 			{
 				//si ce n'est pas vide alors un fichier a bien été chargé via le formulaire.
-				//On concatène la référence sur le titre afin de ne jamais avoir un fichier avec un nom existant sur le serveur.
+				//On concatène l'id sur le titre afin de ne jamais avoir un fichier avec un nom existant sur le serveur. JE CROYAIS QUE CA NE MARCHAIS PAS DANS LE CADRE D'UNE INSERTION -> A TESTER / VERIFIER DANS LE CODE D'INSERTION
 				$photo_bdd = $id . '_'. $_FILES['photo']['name'];
+
 				//vérification de l'extension de l'image (extensions acceptées: jpg,jpeg, png, if)
-				$extension = strrchr($_FILES['photo']['name'], '.'); //cette fonction prédéfinie permet de découper une chaîne selon un caractère fourni en 2ième argument (ici le .) Attention, cette fonction découpera la chaîne à partir de la dernière occurence du 2ième argument (donc nous renvoie la chaîne comprise après le dernier point trouvé)
-				//exemple: maphoto.jpg => on récupère .jpg
-				//exemple: maphoto.phot.png => on récupère .png
-				//var_dump($extension);
+				$extension = strrchr($_FILES['photo']['name'], '.'); // On récupère l'extension du fichier soumis
 				
 				//On transforme $extension afin que tous les caractères soient en minuscule
 				$extension =strtolower($extension); // inverse strtroupper()
+
 				// on enlève le .
 				$extension=substr($extension,1); // exemple: .jpg ->jpg
+
+				// tableau des extensions autorisées
 				$tab_extension_valide =array("jpg","jpeg", "png", "gif");
 				// nous pouvons donc vérifier si $extension fait partie des valeurs autorisées  dans $tab_extension_valide
 				$verif_extension = in_array($extension, $tab_extension_valide);
-				// in_array vérifie si une valeur fournie en 1ier argument fait partie des valeurs contenues dans un tableau array fourni en 2ième argument
 				
+				//Copîe du fichier dans photo/
 				if($verif_extension && !$erreur)
 				{
 					//si $verif_extension est égal à true et que $erreur n'est pas égal à true (il n'y a pas eu d'erreurs au préalable)
@@ -212,14 +195,13 @@ var_dump($message.'test2', $erreur);
 
 
 	//explosion de la chaine keywords avec ', ' comme séparateur
+	// $keywords est définie ligne 123 lors de l'enregistrement d'une photo 
 	$multitags= explode(", ",$keywords);
-	
-	echo '<pre>print :'; print_r($multitags); echo '</pre>';
-	echo '<pre>var :'; var_dump($multitags); echo '</pre>';
+	// NE S'AFFICHE NULLE PART QUAND ON EST PAS EN INSERTION ?? A VOIR
+	echo '<pre>$multitags :'; var_dump($multitags); echo '</pre>';
 
 	//Insertion des photos
-	if(!$erreur) //équivaut à if($erreur ==false)
-		
+	if(!$erreur)		
 	{
 		if(isset($_GET['action']) &&  $_GET['action'] == 'ajout' )
 		{
@@ -237,7 +219,6 @@ var_dump($message.'test2', $erreur);
 		$enregistrement->bindParam(":title", $title, PDO::PARAM_STR);
 		$enregistrement->bindParam(":header", $header, PDO::PARAM_STR);
 		$enregistrement->bindParam(":content", $content, PDO::PARAM_STR);
-		//$enregistrement->bindParam(":date_record", $date_record, PDO::PARAM_STR);
 		$enregistrement->bindParam(":date_picture", $date_picture, PDO::PARAM_STR);
 		$enregistrement->bindParam(":country", $country, PDO::PARAM_STR);
 		$enregistrement->bindParam(":city", $city, PDO::PARAM_STR);
@@ -256,29 +237,17 @@ var_dump($message.'test2', $erreur);
 		}
 	} // fin insertion PHOTO
 
-	//$ida=$_SESSION['utilisateur']['id'];
-	//var_dump('id en cours', $ida);
+}//fin du MEGA isset ligne 112
 
 
 
-}//fin du MEGA isset d'insertion
-
-
-
-//	var_dump($message);
-
-
-
-
-// la ligne suivant commence les affichages dans la page
+// la ligne suivante commence les affichages dans la page
 require("../inc/header.inc.php");
 require("../inc/nav.inc.php");
 echo'<pre>$_GET : '; print_r($_GET); echo '</pre>';
-echo'<pre> $_POST : '; print_r($_POST) ;echo '</pre>';
-echo'<pre>'; print_r($_FILES); echo '</pre>';
-echo 'test4','$erreur','$erreur'; 
-//var_dump($message.'test4', $erreur);
-echo'<pre>'; $message; echo '</pre>';
+echo'<pre>$_POST : '; print_r($_POST) ;echo '</pre>';
+echo'<pre>$_FILES : '; print_r($_FILES); echo '</pre>';
+echo'<pre>$_SESSION[\'utilisateur\' : '; print_r($_SESSION['utilisateur']); echo '</pre>';
 ?>
   
 
@@ -286,87 +255,74 @@ echo'<pre>'; $message; echo '</pre>';
 
       <div class="starter-template">
         <h1>Gestion photo</h1>
-        <?php //echo $message; // messages destinés à l'utilisateur ?>
-		<?= $message; //cette balise php inclue un echo/ cette ligne php est équivalente à la ligne au dessus. ?>
+		<?= $message; ?>
 		<hr />
 		<a href="?action=ajout" class="btn btn-warning">Ajouter une photo</a>
 		<a href="?action=affichage" class="btn btn-info">Afficher les photos</a>
       </div>
-		<?php
-		//affichage de tous les produits dans un tableau html
-		// exercice:couper la description si elle est trop longue
-		//exercice: afficher l'image dans une balise <img src="" />
-			if(isset($_GET['action']) && $_GET['action'] =='affichage' )
+		<?php // AFFICHAGE DES PHOTOS
+					if(isset($_GET['action']) && $_GET['action'] =='affichage' )
 			{
 			
-			//var_dump('status', $status);
+			// récupération de l'id utilisateur dans une variable
 			$ida=$_SESSION['utilisateur']['id'];
-			
-			$requete = $pdo-> query("select  users.status FROM users, pictures WHERE  users.id = pictures.users_id AND users.id=$ida");
-			$res=$requete->fetch(PDO::FETCH_ASSOC);
-			var_dump('status', $res['status']);
-			var_dump('id',$ida);
-			
-			if ($res['status'] == 1 ){
+			// récupération du status de l'user dans une variable
+			$statusUser = $_SESSION['utilisateur']['status'];
+
+			if ($statusUser == 1 ){
 				$resultat = $pdo->query("SELECT * FROM pictures");
 			}
-			else{
-				
-				$resultat = $pdo->query("SELECT * FROM pictures WHERE users_id=$ida");
-			
+			else{				
+				$resultat = $pdo->query("SELECT * FROM pictures WHERE users_id=$ida");			
 			}
+			// a effacer plus tard echo '<pre>$resultat : '; var_dump($resultat); echo'</pre>';
 			
 						echo '<hr>';
 						// première ligne du tableau pour le nom des colonnes
 						echo'<table class="table table-bordered">';
-						echo '<tr>';
-						// récupération du nombre de colonnes dans la requête:
-						$nb_col = $resultat->columnCount();
+							echo '<tr>';
+								// récupération du nombre de colonnes dans la requête:
+								$nb_col = $resultat->columnCount();
 
-						for($i = 0; $i< $nb_col; $i++)
-						{
-						 //echo '<pre>'; print_r($resultat->getColumnMeta($i)); echo '</pre>'; echo '<hr />';
-						 $colonne = $resultat->getColumnMeta($i); // on récupère les informations de la, colonne en cours afin ensuite de dem	ander le name.
-						echo '<th style="padding:10px;">' . $colonne['name'] . '</th>';
-						 
-						}
-						echo'</tr>';
-
+								for($i = 0; $i< $nb_col; $i++)
+								{
+								//echo '<pre>'; print_r($resultat->getColumnMeta($i)); echo '</pre>'; echo '<hr />';
+								$colonne = $resultat->getColumnMeta($i); // on récupère les informations de la, colonne en cours afin ensuite de dem	ander le name.
+								echo '<th style="padding:10px;">' . $colonne['name'] . '</th>';
+								
+								}
+							echo'</tr>';
+						
+						// affichage des éléments du tableau
 						While($ligne =$resultat->fetch(PDO::FETCH_ASSOC))
 						{
 							echo '<tr>';
-							foreach($ligne AS $indice => $info)
-							{
-									if($indice == 'photo')
-									{
-										echo '<td style="padding:10px;"><img src=" '. URL . 'photo/'.$info .'" width="140" /></td>';
-										
-									}elseif($indice == "description") {
-										echo '<td>' . substr($info,0,5) . '..<a href="#">Voir la fiche de la photo</a></td>';
-									}
-									else
-									{
-										echo '<td style="padding:10px;">' .$info .'</td>';
-									}
-							
-								
-							}
-							echo '<td><a href="?action=modification&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></a></td>';
-							echo '<td><a onclick="return(confirm(\'Etes vous sûr de vouloir supprimer cette photo\'));"  href="?action=suppression&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';
-							
-							//echo '<th>Modif</th>'; // ajout de la colonne modification.
-							//echo '<th>Modif</th>'; // ajout de la colonne modification.
-							
+								foreach($ligne AS $indice => $info)
+								{
+										if($indice == 'photo')
+										{
+											echo '<td style="padding:10px;"><img src=" '. URL . 'photo/'.$info .'" width="140" /></td>';
+											
+										}elseif($indice == "content") {
+											// lier la vue de la photo quand elle sera dsiponible
+											echo '<td>' . substr($info,0,40) . '..<a href="#">Voir la fiche de la photo</a></td>';
+										}
+										else
+										{
+											echo '<td style="padding:10px;">' .$info .'</td>';
+										}								
+								}
+								echo '<td><a href="?action=modification&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></a></td>';
+								echo '<td><a onclick="return(confirm(\'Etes vous sûr de vouloir supprimer cette photo\'));"  href="?action=suppression&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';	
 							echo '</tr>';
 						}	
 
 						echo '</table>';
 			}
-		?>  
-	  
-	  
-	  
+		/* pas indispensable, je crois
+		?>	  
 		<?php
+		*/
 			if(isset($_GET['action']) && ($_GET['action'] =='ajout' || $_GET['action'] == 'modification'))
 			{
 		?>
@@ -378,24 +334,24 @@ echo'<pre>'; $message; echo '</pre>';
 					<input type="hidden" name="id" id="id" class="form-control" value="<?php echo $id; ?>">
 					
 					<div class="form-group">
-						<label for="reference">title<span style="color:red;"></span></label>
+						<label for="title">title<span style="color:red;"></span></label>
 						<input type="text" name="title" id="title" class="form-control" placeholder="title" value="<?php echo $title; ?>">
 					</div>								
 					<div class="form-group">
 						<label for="header">header<span style="color:red;"></span></label>
-						<input type="text" name="header" id="header" class="form-control" placeholder="header "value="<?php echo $header; ?>">
+						<input type="text" name="header" id="header" class="form-control" placeholder="header" value="<?php echo $header; ?>">
 					</div>
 					<div class="form-group">
 						<label for="content">content</label>
-						<input type="text" name="content" id="content" class="form-control" placeholder="content"value="<?php echo $content; ?>">
+						<input type="text" name="content" id="content" class="form-control" placeholder="content" value="<?php echo $content; ?>">
 					</div>
 					<div class="form-group">
 						<label for="date_picture">date de la photo</label>
-						<input type="date" name="date_picture" id="date_picture" class="form-control" placeholder="date de la photo"value="<?php echo $date_picture; ?>">
+						<input type="date" name="date_picture" id="date_picture" class="form-control" placeholder="date de la photo" value="<?php echo $date_picture; ?>">
 					</div>
 					<div class="form-group">
 						<label for="country">pays</label>
-						<input type="text" name="country" id="country" class="form-control" placeholder="country"value="<?php echo $country; ?>">
+						<input type="text" name="country" id="country" class="form-control" placeholder="country" value="<?php echo $country; ?>">
 					</div>
 					<div class="form-group">
 						<label for="city">ville / lieu</label>
@@ -412,11 +368,9 @@ echo'<pre>'; $message; echo '</pre>';
 							// On crée un champs caché qui contiendra le nom de la photo afin de le récupérer lors de la validation du formulaire.
 							echo '<input type="hidden" name="ancienne_photo" value="' .$photo_actuelle . '"/>';
 							echo '</div>';
-						}
-					
+						}					
 					?>
-					
-					
+										
 					
 					<div class="form-group">
 						<label for="photo">photo</label>
@@ -425,24 +379,18 @@ echo'<pre>'; $message; echo '</pre>';
 					
 					
 					<div class="form-group">
-						<label for="keywords">entrer des mots clefs séparés par ", " </label>
+						<label for="keywords">entrer des mots clefs séparés par ", "  (virgule espace)</label>
 						<input type="text" name="keywords" id="keywords" class="form-control" value="<?php
-						/* Je vais imploder $keywords et rajouter des ", " - ca va le faire */		 
+						/* Je vais imploder $keywords et rajouter des ", " - ca va le faire
+						ou peut-être les appeler par une requête (reflexion reflexion) */		 
 						?>">
-					</div>
-					<pre><?= var_dump($keyword) ?></pre>	
-					<pre><?= var_dump($multitags) ?></pre>	
-					
+					</div>			
 					
 					
 					
 					<div class="form-group">
-					<button class="form-control btn btn-success"><span class="glyphicon glyphicon-star" style="color:red;"></span>
-					<span class="glyphicon glyphicon-star" style="color:red;"></span>
-					<span class="glyphicon glyphicon-star" style="color:red;"></span>valider<span class="glyphicon glyphicon-star" style="color:red;"></span><span class="glyphicon glyphicon-star" style="color:red;"></span><span class="glyphicon glyphicon-star" style="color:red;"></span></button>
-					
-					</div>
-				
+						<button class="form-control btn btn-success">valider</button>					
+					</div>	
 				
 				</form>
 			</div>
@@ -450,17 +398,11 @@ echo'<pre>'; $message; echo '</pre>';
 	  
 		</div>
 	  <?php
-			} // accolade correspondante à la condition sur l'affichage ajout
-				// if(isset($_GET['action']) && $_GET['action'] =='ajout' )
-		?>
-
-	  
+			} // fin if(isset($_GET['action']) && $_GET['action'] =='ajout' )
+		?>	  
 	  
     </div><!-- /.container -->
 
-
 <?php
 require("../inc/footer.inc.php");
-
-
 ?>
