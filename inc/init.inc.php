@@ -21,7 +21,11 @@ session_start();
 
 // d�finition de la constante pour le chemin absolu ainsi que pour la racine serveur
 // racine site
-define("URL","/sitephoto/");
+
+define("URL","/pictmachine/");
+
+// define("URL","/sitephoto/");
+
 
 //racine serveur
 define("RACINE_SERVEUR", $_SERVER['DOCUMENT_ROOT'] . URL);

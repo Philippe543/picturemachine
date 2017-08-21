@@ -10,9 +10,7 @@ if($_POST) // équivaut à if(!empty($_POST))
 	$arg_country = false;
 	$arg_city = false;
 	$arg_tag=false;
-	$var1 = "pictures";
-
-
+	
 	if(!empty($_POST['country']))
 	{
 		$condition .= " WHERE country = :country ";
@@ -28,7 +26,6 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		if($arg_country)
 		{
-			// vérifier la requete pour cette condition
 			$condition .= " AND city = :city ";
 		}
 		else {
@@ -41,21 +38,14 @@ if($_POST) // équivaut à if(!empty($_POST))
 	
 	// Recherche des photos avec tags (en cours de développement (tags)
 	
-	if (!empty($_POST['tags']))
+	if (!empty($_POST['keywords']))
 	{
 		$arg_tag =true;
-		// requete jointure table photos et tags
-		$var1 .= ", tags_picture";
-		$condition = " WHERE pictures.id = tags_picture.pictures_id AND tags_picture.tag_word = :tagspicture";
-		$filtre_tag = $_POST['tags'];
 	}
 	
-	$liste_article = $pdo->prepare("SELECT * FROM $var1 $condition");
 	
-
-
-
-	//$liste_article = $pdo->prepare("SELECT * FROM pictures $condition");
+	
+	$liste_article = $pdo->prepare("SELECT * FROM pictures $condition");
 	//$liste_article = $pdo->prepare("SELECT * FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id $condition");
 	
 	if($arg_country) // si $arg_country == true alors il faut fournir l'argument country
@@ -66,15 +56,10 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		$liste_article->bindParam(":city", $filtre_city, PDO::PARAM_STR);
 	}
-	if($arg_tag) // si $arg_tag == true alors il faut fournir l'argument tag
-	{
-		$liste_article->bindParam(":tagspicture", $filtre_tag, PDO::PARAM_STR);
-	}
-
+	
 	// en cours de développement (tags)
 	
-	echo '<pre>'; var_dump($liste_article); echo '</pre>';
-	echo '<pre>'; var_dump($filtre_tag); echo '</pre>';
+	
 	$liste_article->execute();		
 }
 /*
@@ -100,7 +85,7 @@ $liste_city = $pdo->query("SELECT DISTINCT city FROM pictures ORDER BY city");
 
 
 //requete de récupérations des différents tags en BDD
-$liste_tags  = $pdo->query("SELECT DISTINCT tag_word FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id ORDER BY tag_word ASC");
+$liste_tags  = $pdo->query("SELECT DISTINCT keywords FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id");
 
 
 // la ligne suivant commence les affichages dans la page
@@ -175,14 +160,16 @@ echo '<pre>'; print_r($_POST); echo '</pre>';
 								<option></option>';
 					while($tags = $liste_tags->fetch(PDO::FETCH_ASSOC))
 					{
-						echo '<option>' . $tags['tag_word'] . '</option>';
+						echo '<option>' . $tags['keywords'] . '</option>';
 					}
 					echo '  </select></div>';
 					
 					
 					echo '<div class="form-group">
 						<button type="submit"  name="filtrer" id="filtrer" class="form-control btn btn-primary">Valider</button>
-					</div>';				
+					</div>';
+					
+					
 				
 				echo '</form>';
 			?>

@@ -17,6 +17,8 @@
 
     <!-- Custom styles for this template -->
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
+	
+	<link href="<?php echo URL; ?>css/agency.min.css" rel="stylesheet">
   </head>
 
   <body>
