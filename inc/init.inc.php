@@ -13,15 +13,12 @@ session_start();
 
 
 
-/* TEST GITIGNORE, SI TU LIS CE TEXTE C'4'EST QUE LE .gitignore NE MARcHE PAS */
-
-
-
+/* TEST GITIGNORE, SI TU LIS CE TEXTE C'EST QUE LE .gitignore NE MARcHE PAS */
 
 
 // d�finition de la constante pour le chemin absolu ainsi que pour la racine serveur
 // racine site
-
+// /!\ CHEMIN a changer selon votre arborescence tant que gitignore ne fonctionne pas.
 define("URL","/pictmachine/");
 
 // define("URL","/sitephoto/");
