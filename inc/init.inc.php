@@ -13,7 +13,7 @@ session_start();
 
 
 
-/* TEST GITIGNORE, SI TU LIS CE TEXTE C4EST QUE LE .gitignore NE MARHE PAS */
+/* TEST GITIGNORE, SI TU LIS CE TEXTE C'4'EST QUE LE .gitignore NE MARcHE PAS */
 
 
 
