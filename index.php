@@ -100,7 +100,7 @@ $liste_city = $pdo->query("SELECT DISTINCT city FROM pictures ORDER BY city");
 
 
 //requete de récupérations des différents tags en BDD
-$liste_tags  = $pdo->query("SELECT DISTINCT keywords FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id ORDER BY keywords DESC");
+$liste_tags  = $pdo->query("SELECT DISTINCT keywords FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id");
 
 
 // la ligne suivant commence les affichages dans la page
