@@ -46,8 +46,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'suppression' && !empty($_GET['i
 	
 	// on bascule sur l'affichage du tableau
 	$_GET['action'] = 'affichage';
-	
-	
 }
 
 
@@ -63,7 +61,7 @@ $city="";
 $photo_bdd="";
 
 //déclaration d'une variable de contrôle
-
+$multitags="";
 $erreur="";
 $message="";
 $status="";
@@ -71,6 +69,8 @@ $lastId="";
 //*********************************************************
 // RECUPERATION DES INFORMATIONS D'UNE PHOTO A MODIFIER
 //********************************************************
+
+
 if(isset($_GET['action']) && $_GET['action'] == 'modification' && !empty($_GET['id']) && is_numeric($_GET['id']))
 {
 	$id= $_GET['id'];
@@ -89,10 +89,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification' && !empty($_GET['
 	$city = $photo_actuel['city'];
 	// on récupère la photo de l'article dans une nouvelle variable
 	$photo_actuelle = $photo_actuel['photo'];
-	$keywords=$photo_actuel['keywords'];
+
+	// keywords n'est aps une colonne de la table pictures
+	//$keywords=$photo_actuel['keywords'];
 }
 
-var_dump($message.'test1', $erreur,$id);
+//var_dump($message.'test1', $erreur,$id);
 
 
 
@@ -124,7 +126,7 @@ var_dump($message.'test2', $erreur);
 	$date_picture = $_POST['date_picture'];
 	$country = $_POST['country'];
 	$city = $_POST['city'];
-	$keywords=$_POST['keywords'];
+	$keywords=strtoupper($_POST['keywords']);
 	
 
 	var_dump($message.'test3', $erreur,$id);
@@ -205,56 +207,63 @@ var_dump($message.'test2', $erreur);
 				
 				
 			}
-			
+	
 	//relation avec la table keywords
-	$multitags= explode(",",$keywords);
+
+
+	//explosion de la chaine keywords avec ', ' comme séparateur
+	$multitags= explode(", ",$keywords);
 	
 	echo '<pre>print :'; print_r($multitags); echo '</pre>';
 	echo '<pre>var :'; var_dump($multitags); echo '</pre>';
 
-	//Insertion des produits
+	//Insertion des photos
 	if(!$erreur) //équivaut à if($erreur ==false)
 		
+	{
+		if(isset($_GET['action']) &&  $_GET['action'] == 'ajout' )
 		{
-			if(isset($_GET['action']) &&  $_GET['action'] == 'ajout' )
-			{
-				$enregistrement =$pdo->prepare("INSERT INTO pictures (title, header, content, date_record, date_picture, country, city, photo, users_id) VALUES (:title, :header, :content, now(), :date_picture, :country, :city, :photo, :users_id)");		
-			}
-			elseif(isset($_GET['action']) && $_GET['action'] == 'modification')
-			{
-				$enregistrement = $pdo->prepare("UPDATE pictures SET title = :title, header= :header, content =:content, date_picture= :date_picture, country =:country, city =:city, photo=:photo WHERE id=:id");
-				$id =$_POST['id'];
-				$enregistrement->bindParam(":id", $id, PDO::PARAM_STR);
-			}
-	
-	
-	
-	$enregistrement->bindParam(":title", $title, PDO::PARAM_STR);
-	$enregistrement->bindParam(":header", $header, PDO::PARAM_STR);
-	$enregistrement->bindParam(":content", $content, PDO::PARAM_STR);
-	//$enregistrement->bindParam(":date_record", $date_record, PDO::PARAM_STR);
-	$enregistrement->bindParam(":date_picture", $date_picture, PDO::PARAM_STR);
-	$enregistrement->bindParam(":country", $country, PDO::PARAM_STR);
-	$enregistrement->bindParam(":city", $city, PDO::PARAM_STR);
-	$enregistrement->bindParam(":photo", $photo_bdd, PDO::PARAM_STR);
-	$enregistrement->bindParam(":users_id", $_SESSION['utilisateur']['id'], PDO::PARAM_INT);
-	$enregistrement->execute();
-
+			$enregistrement =$pdo->prepare("INSERT INTO pictures (title, header, content, date_record, date_picture, country, city, photo, users_id) VALUES (:title, :header, :content, now(), :date_picture, :country, :city, :photo, :users_id)");		
 		}
+		elseif(isset($_GET['action']) && $_GET['action'] == 'modification')
+		{
+			$enregistrement = $pdo->prepare("UPDATE pictures SET title = :title, header= :header, content =:content, date_picture= :date_picture, country =:country, city =:city, photo=:photo WHERE id=:id");
+			$id =$_POST['id'];
+			$enregistrement->bindParam(":id", $id, PDO::PARAM_STR);
+		}
+	
+	
+	
+		$enregistrement->bindParam(":title", $title, PDO::PARAM_STR);
+		$enregistrement->bindParam(":header", $header, PDO::PARAM_STR);
+		$enregistrement->bindParam(":content", $content, PDO::PARAM_STR);
+		//$enregistrement->bindParam(":date_record", $date_record, PDO::PARAM_STR);
+		$enregistrement->bindParam(":date_picture", $date_picture, PDO::PARAM_STR);
+		$enregistrement->bindParam(":country", $country, PDO::PARAM_STR);
+		$enregistrement->bindParam(":city", $city, PDO::PARAM_STR);
+		$enregistrement->bindParam(":photo", $photo_bdd, PDO::PARAM_STR);
+		$enregistrement->bindParam(":users_id", $_SESSION['utilisateur']['id'], PDO::PARAM_INT);
+		$enregistrement->execute();
+
+		// on est toujours dans l'insertion : INSERTION TAGS
+		$lastId = $pdo->lastInsertId ();
+		
+		foreach($multitags AS $multitag) {
+			$enregistrement2 =$pdo->prepare("INSERT INTO tags_picture (tag_word, pictures_id) VALUES( :multitags, :id)");
+			$enregistrement2->bindParam(":multitags", $multitag, PDO::PARAM_STR);
+			$enregistrement2->bindParam(":id", $lastId, PDO::PARAM_STR);
+			$enregistrement2->execute();
+		}
+	} // fin insertion PHOTO
 
 	//$ida=$_SESSION['utilisateur']['id'];
 	//var_dump('id en cours', $ida);
 
-	//Enregistrement des mots clefs dans la BDD tags_picture
-}	
-	$lastId = $pdo->lastInsertId ();
-	
-	foreach($multitags AS $multitag) {
-		$enregistrement2 =$pdo->prepare("INSERT INTO tags_picture (keywords, pictures_id) VALUES( :multitags, :id)");
-		$enregistrement2->bindParam(":multitags", $multitag, PDO::PARAM_STR);
-		$enregistrement2->bindParam(":id", $lastId, PDO::PARAM_STR);
-		$enregistrement2->execute();
-	}
+
+
+}//fin du MEGA isset d'insertion
+
+
 
 //	var_dump($message);
 
@@ -416,9 +425,13 @@ echo'<pre>'; $message; echo '</pre>';
 					
 					
 					<div class="form-group">
-						<label for="keywords">entrer des mots clefs séparés par des virgules , </label>
-						<input type="text" name="keywords" id="keywords" class="form-control" value="">
-					</div>	
+						<label for="keywords">entrer des mots clefs séparés par ", " </label>
+						<input type="text" name="keywords" id="keywords" class="form-control" value="<?php
+						/* Je vais imploder $keywords et rajouter des ", " - ca va le faire */		 
+						?>">
+					</div>
+					<pre><?= var_dump($keyword) ?></pre>	
+					<pre><?= var_dump($multitags) ?></pre>	
 					
 					
 					

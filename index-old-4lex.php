@@ -1,7 +1,7 @@
 <?php
 require("inc/init.inc.php");
 
-//$liste_article = $pdo->query("SELECT * FROM pictures");
+$liste_article = $pdo->query("SELECT * FROM pictures");
 
 // requete de récupération de tous les produits
 if($_POST) // équivaut à if(!empty($_POST))
@@ -46,7 +46,7 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$arg_tag =true;
 		// requete jointure table photos et tags
 		$var1 .= ", tags_picture";
-		$condition = " WHERE pictures.id = tags_picture.pictures_id AND tags_picture.keywords = :tagspicture";
+		$condition = " WHERE pictures.id = tags_picture.pictures_id AND tags_picture.tag_word = :tagspicture";
 		$filtre_tag = $_POST['tags'];
 	}
 	
@@ -100,7 +100,7 @@ $liste_city = $pdo->query("SELECT DISTINCT city FROM pictures ORDER BY city");
 
 
 //requete de récupérations des différents tags en BDD
-$liste_tags  = $pdo->query("SELECT DISTINCT keywords FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id");
+$liste_tags  = $pdo->query("SELECT DISTINCT tag_word FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id ORDER BY tag_word ASC");
 
 
 // la ligne suivant commence les affichages dans la page
@@ -175,16 +175,14 @@ echo '<pre>'; print_r($_POST); echo '</pre>';
 								<option></option>';
 					while($tags = $liste_tags->fetch(PDO::FETCH_ASSOC))
 					{
-						echo '<option>' . $tags['keywords'] . '</option>';
+						echo '<option>' . $tags['tag_word'] . '</option>';
 					}
 					echo '  </select></div>';
 					
 					
 					echo '<div class="form-group">
 						<button type="submit"  name="filtrer" id="filtrer" class="form-control btn btn-primary">Valider</button>
-					</div>';
-					
-					
+					</div>';				
 				
 				echo '</form>';
 			?>

@@ -14,7 +14,7 @@ function utilisateur_est_connecte()
 //fonction pour savoir si un utilisateur est connecté mais aussi a le statut administrateuradministrateur
 function utilisateur_est_admin()
 {
-	if (utilisateur_est_connecte() && $_SESSION['utilisateur']['statut']== 1)
+	if (utilisateur_est_connecte() && $_SESSION['utilisateur']['status'] == 1)
 	{
 		return true;
 	}
