@@ -1,7 +1,7 @@
 <?php
 require("inc/init.inc.php");
 
-$liste_article = $pdo->query("SELECT * FROM pictures");
+//$liste_article = $pdo->query("SELECT * FROM pictures");
 
 // requete de récupération de tous les produits
 if($_POST) // équivaut à if(!empty($_POST))
@@ -10,7 +10,9 @@ if($_POST) // équivaut à if(!empty($_POST))
 	$arg_country = false;
 	$arg_city = false;
 	$arg_tag=false;
-	
+	$var1 = "pictures";
+
+
 	if(!empty($_POST['country']))
 	{
 		$condition .= " WHERE country = :country ";
@@ -26,6 +28,7 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		if($arg_country)
 		{
+			// vérifier la requete pour cette condition
 			$condition .= " AND city = :city ";
 		}
 		else {
@@ -38,14 +41,21 @@ if($_POST) // équivaut à if(!empty($_POST))
 	
 	// Recherche des photos avec tags (en cours de développement (tags)
 	
-	if (!empty($_POST['keywords']))
+	if (!empty($_POST['tags']))
 	{
 		$arg_tag =true;
+		// requete jointure table photos et tags
+		$var1 .= ", tags_picture";
+		$condition = " WHERE pictures.id = tags_picture.pictures_id AND tags_picture.keywords = :tagspicture";
+		$filtre_tag = $_POST['tags'];
 	}
 	
+	$liste_article = $pdo->prepare("SELECT * FROM $var1 $condition");
 	
-	
-	$liste_article = $pdo->prepare("SELECT * FROM pictures $condition");
+
+
+
+	//$liste_article = $pdo->prepare("SELECT * FROM pictures $condition");
 	//$liste_article = $pdo->prepare("SELECT * FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id $condition");
 	
 	if($arg_country) // si $arg_country == true alors il faut fournir l'argument country
@@ -56,10 +66,15 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		$liste_article->bindParam(":city", $filtre_city, PDO::PARAM_STR);
 	}
-	
+	if($arg_tag) // si $arg_tag == true alors il faut fournir l'argument tag
+	{
+		$liste_article->bindParam(":tagspicture", $filtre_tag, PDO::PARAM_STR);
+	}
+
 	// en cours de développement (tags)
 	
-	
+	echo '<pre>'; var_dump($liste_article); echo '</pre>';
+	echo '<pre>'; var_dump($filtre_tag); echo '</pre>';
 	$liste_article->execute();		
 }
 /*
@@ -85,7 +100,7 @@ $liste_city = $pdo->query("SELECT DISTINCT city FROM pictures ORDER BY city");
 
 
 //requete de récupérations des différents tags en BDD
-$liste_tags  = $pdo->query("SELECT DISTINCT keywords FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id");
+$liste_tags  = $pdo->query("SELECT DISTINCT keywords FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id ORDER BY keywords DESC");
 
 
 // la ligne suivant commence les affichages dans la page
