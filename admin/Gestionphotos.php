@@ -69,7 +69,7 @@ $message="";
 $status="";
 $lastId="";
 //*********************************************************
-// RECUPERATION DES INFORMATIONS D'UN ARTICLE A MODIFIER
+// RECUPERATION DES INFORMATIONS D'UNE PHOTO A MODIFIER
 //********************************************************
 if(isset($_GET['action']) && $_GET['action'] == 'modification' && !empty($_GET['id']) && is_numeric($_GET['id']))
 {
@@ -98,7 +98,7 @@ var_dump($message.'test1', $erreur,$id);
 
 
 //*************************************************************************************************************
-// ENREGISTREMENT DES PRODUITS
+// ENREGISTREMENT DES PHOTOS
 //*************************************************************************************************************
 
 // contrôle sur l'existence de tous les champs provenant du formulaire (sauf le bouton de validation)
