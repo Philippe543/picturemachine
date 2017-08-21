@@ -11,7 +11,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
 //vérification si l'utilisateur est connecté sinon on le redirige sur profil
 if(utilisateur_est_connecte())
 {
-//	header("location:profil.php");
+	//header("location:profil.php");
 }
 
 
@@ -40,12 +40,13 @@ if(isset($_POST['pseudo']) && isset($_POST['password']))
 		$_SESSION['utilisateur']['gender'] = $info_utilisateur['gender'];
 		$_SESSION['utilisateur']['pseudo'] = $info_utilisateur['pseudo'];
 		$_SESSION['utilisateur']['email'] = $info_utilisateur['email'];
+		$_SESSION['utilisateur']['status'] = $info_utilisateur['status'];
 		
 		
 		
 		//on redirige sur profil
 		$message='<div class="alert alert-success" role="success" style="margin-top:20px;">L\'enregistrement s\'est effectué<br /></div>';
-	//	header("location:profil.php");
+		header("location:index.php"); // en attendant d'activer le profil
 		
 		// même chose avec un foreach : c'est une autre solution pour enregistrer un utilisateur
 		/*
