@@ -46,7 +46,7 @@ if(isset($_POST['pseudo']) && isset($_POST['password']))
 		
 		//on redirige sur profil
 		$message='<div class="alert alert-success" role="success" style="margin-top:20px;">L\'enregistrement s\'est effectué<br /></div>';
-		header("location:index.php"); // en attendant d'activer le profil
+		header("location:galerie_anciennement_index.php"); // en attendant d'activer le profil
 		
 		// même chose avec un foreach : c'est une autre solution pour enregistrer un utilisateur
 		/*
