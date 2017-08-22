@@ -1,6 +1,6 @@
-<?php
-require("inc/init.inc.php");
-//require("inc/header.inc.php");
+<?php // JE LAISSE JUSTE LE CODE
+
+
 // déclaration de cariables vides pour affichage dans les values du formulaire
 $lastname="";
 $firstname="";
@@ -148,85 +148,4 @@ isset($_POST['passwordcheck']))
 		//On redirige sur la page de connexion.php
 			header("location:connexion.php");	
 	}
-
-	
-	
-	// à faire
-	var_dump($message);
-
-
 }
-require("inc/header.inc.php");
-require("inc/nav.inc.php");
-?>
-
-    <div class="container">
-
-      <div class="starter-template">
-        <h1><span class="glyphicon glyphicon-user" style="color:plum;"></span>Inscription
-		</h1>
-        <?php //echo $message .'test1' ;  messages destinés à l'utilisateur ?>
-		<?= $message; //cette balise php inclue un echo/ cette ligne php est équivalente à la ligne au dessus. ?>
-      </div>
-
-		<div class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-				<form method="post" action="">
-					<div class="form-group">
-						<label for="lastname">Nom</label>
-						<input type="text" name="lastname" id="lastname" class="form-control" placeholder="Votre nom" value="<?php echo $lastname; ?>">				
-					</div>	
-					<div class="form-group">
-						<label for="prenom">Prénom</label>
-						<input type="text" name="firstname" id="firstname" class="form-control" placeholder="Votre prénom" value="<?php echo $firstname; ?>">
-					</div>
-					
-					<div class="form-group">
-						<label for="gender">Sexe</label>
-						<select name="gender" id="gender" class="form-control">
-							<option value="m">Homme</option>
-							<option value="f" <?php if($gender =='f'){echo 'selected';} ?> >femme</option>
-						</select>
-					</div>	
-				
-				
-					<div class="form-group">
-						<label for="pseudo">pseudo</label>
-						<input type="text" name="pseudo" id="pseudo" class="form-control" placeholder="Votre pseudo" value="<?php echo $pseudo; ?>">
-					</div>
-					
-					<div class="form-group">
-						<label for="email">email</label>
-						<input type="text" name="email" id="email" class="form-control" value="<?php echo $email; ?>">
-					</div>
-					
-					
-					<div class="form-group">
-						<label for="password">Mot de passe</label>
-						<input type="text" name="password" id="password" class="form-control" placeholder="" value="<?php echo $password; ?>">
-					</div>
-					
-					<div class="form-group">
-						<label for="password">confirmation du mot de passe</label>
-						<input type="text" name="passwordcheck" id="passwordcheck" class="form-control" placeholder="" value="<?php echo $passwordcheck; ?>">
-					</div>
-					
-					
-					
-					<div class="form-group">
-							<button class="form-control btn btn-success"><span class="glyphicon glyphicon-star" style="color:red;"></span>
-							<span class="glyphicon glyphicon-star" style="color:red;"></span>
-							<span class="glyphicon glyphicon-star" style="color:red;"></span>valider<span class="glyphicon glyphicon-star" style="color:red;"></span><span class="glyphicon glyphicon-star" style="color:red;"></span><span class="glyphicon glyphicon-star" style="color:red;"></span>
-						</button>
-					
-					</div>
-				</form>
-			</div>
-		</div>
-    </div><!-- /.container -->
-
-<?php
-
-?>
-
-	

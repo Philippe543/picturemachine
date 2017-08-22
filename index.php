@@ -68,18 +68,23 @@ if($_POST) // équivaut à if(!empty($_POST))
 // requete de récupération des différentes country en BDD
 $liste_country = $pdo->query("SELECT DISTINCT country FROM pictures ORDER BY country");
 
-
 // requete de récupération des différentes city en BDD
 $liste_city = $pdo->query("SELECT DISTINCT city FROM pictures ORDER BY city");
-
 
 //requete de récupérations des différents tags en BDD
 $liste_tags  = $pdo->query("SELECT DISTINCT tag_word FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id ORDER BY tag_word ASC");
 
-require("inc/header.inc.php"); // la ligne suivante commence les affichage de la page
+
+/*------------------------------------------------------------------------
+            la ligne suivante commence les affichage de la page
+------------------------------------------------------------------------*/
+require("inc/header.inc.php"); 
 require("inc/nav.inc.php");
+echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
 ?>
 
+<!-- affichage message -->
+<?= $message; ?>
 <!-- Header -->
     <header>
         <div class="container">
@@ -223,7 +228,7 @@ require("inc/nav.inc.php");
                 </div>
 				<div class="col-sm-2">
 						<?php
-						echo '<form method="post" action="">';
+						echo '<form method="post" action="index.php#galeries">';
 						
 						
 						// affichage des pays

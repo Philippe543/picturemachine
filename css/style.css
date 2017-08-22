@@ -1,7 +1,9 @@
-body {
-  padding-top: 150px;
+/* Tentative d'afficher les liens de la navbar avant le début du scroll */
+
+.navbar-custom .nav li a {
+    color: #fed136;
 }
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
+
+.navbar-custom {
+    background: #222222;
 }
