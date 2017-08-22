@@ -1,6 +1,11 @@
 <?php
 require("inc/init.inc.php");
 
+/*
+CE FICHIER NE S'AFFICHE PLUS : MODAL DANS NAV.INC.PHP
+on le conserve pour éventuellement prendre du code dedans
+*/
+
 // CODE DE VERIFICATION
 if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
 {

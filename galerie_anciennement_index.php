@@ -16,13 +16,15 @@ if($_POST) // équivaut à if(!empty($_POST))
 	$arg_city = false;
 	$arg_tag=false;
 	$var1 = "pictures";
-
+	$arg_year1=false;
+	$arg_year2=false;
+	$message="";
 
 	if(!empty($_POST['country']))
 	{
 		$condition .= " WHERE country = :country ";
 		$arg_country = true;		
-		$filtre_country = $_POST['country'];	
+		$filtre_country = $_POST['country'];
 		
 		/* $liste_article = $pdo->prepare("SELECT * FROM article WHERE country = :country");
 		$liste_article->bindParam(":country", $filtre_country, PDO::PARAM_STR);
@@ -43,6 +45,60 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$arg_city = true;		
 		$filtre_city = $_POST['city'];	
 	}
+	
+	// Recherche des photos par année Philippe
+	//année1
+	
+	
+	if(!empty($_POST['date_picture1'] && $_POST['date_picture1'] <= $_POST['date_picture2']))
+	{
+		$condition .= "WHERE date_picture BETWEEN :date_picture1 AND :date_picture2 ";
+		$arg_year = true;		
+		$filtre_year1 = $_POST['date_picture1'];
+		$filtre_year2 = $_POST['date_picture2'];			
+	} 
+	
+	
+	/*
+	// on test picture1
+	if(!empty($_POST['date_picture1'])) {		
+		$filtre_year1 = $_POST['date_picture1'];
+		$condition .= "WHERE date_picture BETWEEN :date_picture1 AND :date_picture2 ";
+		
+		// uniquement date 1 de renseigné
+		if(empty($_POST['date_picture2']))
+			$filtre_year2 =$_POST['date_picture1'];
+
+		// date 2 renseigné et supérieure à date 1 (cas normal)	
+		elseif(!empty($_POST['date_picture2'] && $filtre_year1 <= $_POST['date_picture2'])){
+			$arg_year = true;	
+			$filtre_year2 = $_POST['date_picture2'];
+			
+		}else {
+			$arg_year = false;
+			//prévoir afficher le message
+			$message ="Votre date de fin est inférieure à la date de début. Veuillez sélectionner une année supérieure ou égale à la date de début";
+		}
+		var_dump($condition);
+		
+		
+		
+		
+	}
+	*/
+	
+	
+	//année 2
+	//if(!empty($_POST['date_picture2']))
+	//{
+		//$condition .= " WHERE date_picture2 = :date_picture ";
+		//$arg_year = true;		
+		//$filtre_year = $_POST['date_picture'];	
+	//}
+	
+	
+	
+	
 	
 	// Recherche des photos avec tags (en cours de développement (tags)
 	
@@ -71,6 +127,15 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		$liste_article->bindParam(":city", $filtre_city, PDO::PARAM_STR);
 	}
+	
+	if($arg_year) // si $arg_year == true alors il faut fournir l'argument year
+	{
+		$liste_article->bindParam(":date_picture1", $filtre_year1, PDO::PARAM_STR);
+		$liste_article->bindParam(":date_picture2", $filtre_year2, PDO::PARAM_STR);
+	}
+	
+	
+	
 	if($arg_tag) // si $arg_tag == true alors il faut fournir l'argument tag
 	{
 		$liste_article->bindParam(":tagspicture", $filtre_tag, PDO::PARAM_STR);
@@ -80,7 +145,7 @@ if($_POST) // équivaut à if(!empty($_POST))
 	
 	echo '<pre>'; var_dump($liste_article); echo '</pre>';
 	echo '<pre>'; var_dump($filtre_tag); echo '</pre>';
-	$liste_article->execute();		
+	$liste_article->execute();
 }
 /*
 elseif(!empty($_GET['categorie']))
@@ -102,6 +167,11 @@ $liste_country = $pdo->query("SELECT DISTINCT country FROM pictures ORDER BY cou
 
 // requete de récupération des différentes city en BDD
 $liste_city = $pdo->query("SELECT DISTINCT city FROM pictures ORDER BY city");
+
+//if($_POST[date_picture1] < $_POST[date_picture2]){
+	// requete de récupération des différentes années en BDD
+	//$liste_year = $pdo->query("SELECT DISTINCT date_picture FROM pictures BETWEEN $_POST[date_picture1] AND $_POST[date_picture2] ORDER BY date_picture");
+//}// todo le esle 
 
 
 //requete de récupérations des différents tags en BDD
@@ -165,10 +235,34 @@ echo '<pre>'; print_r($_POST); echo '</pre>';
 					}
 					echo '  </select></div>';
 					
-					// affichage des tags si on veut combiner les recherches
+					// affichage des années
+					//année 1
+					echo '<div class="form-group">
+							<label for="date_picture1">Année de début</label>
+							<select name="date_picture1" id="date_picture1" class="form-control">
+							<option></option>';
+								for($i= date('Y'); $i >= 1900; $i--){
+									echo '<option>' . $i . '</option>';
+								}
+					/*while($date_picture1 = $liste_year->fetch(PDO::FETCH_ASSOC))
+					{
+						echo '<option>' . $date_picture1['date_picture'] . '</option>';
+					}*/
+					echo '  </select></div>';
 					
-					
-					
+					//année 2
+					echo '<div class="form-group">
+							<label for="date_picture2">Année de fin</label>
+							<select name="date_picture2" id="date_picture2" class="form-control">
+							<option></option>';
+								for($i = date('Y'); $i >= 1900; $i--){
+									echo '<option>' . $i . '</option>';
+								}
+					/*while($date_picture2 = $liste_year->fetch(PDO::FETCH_ASSOC))
+					{
+						echo '<option>' . $date_picture2['date_picture'] . '</option>';
+					}*/
+					echo '  </select></div>';
 					
 					
 					
@@ -213,7 +307,8 @@ echo '<pre>'; print_r($_POST); echo '</pre>';
 					echo '<img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" />';
 					
 					echo '<hr />';
-					//echo '<a href="fiche_article.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
+					//modification philippe : possibilité de voir la photo
+					echo '<a href="affichage_photo.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
 					
 					echo '</div></div></div>';
 				}				

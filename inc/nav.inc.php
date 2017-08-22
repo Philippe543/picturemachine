@@ -13,7 +13,7 @@ $nav_admin = '
       <li><a href="' . URL . 'admin/stats.php"> STATS</a></li>
       <li><a href="' . URL . 'admin/gestion_users.php"> GESTION UTILISATEURS</a></li>
       <li><a href="' . URL . 'admin/gestion_galeries.php"> GESTION GALERIES</a></li>
-      <li><a href="' . URL . 'admin/gestion_avis.php"> GESTION PHOTOS</a></li>
+      <li><a href="' . URL . 'admin/gestionphotos.php"> GESTION PHOTOS</a></li>
       <li><a href="' . URL . 'admin/gestion_produit.php"> GESTION COMMENTAIRES</a></li>
   </ul>
 </div>';

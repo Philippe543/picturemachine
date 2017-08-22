@@ -257,7 +257,7 @@ echo'<pre>$_SESSION[\'utilisateur\' : '; print_r($_SESSION['utilisateur']); echo
         <h1>Gestion photo</h1>
 		<?= $message; ?>
 		<hr />
-		<a href="?action=ajout" class="btn btn-warning">Ajouter une photo</a>
+		<a href="?action=ajout" class="btn btn-info">Ajouter une photo</a>
 		<a href="?action=affichage" class="btn btn-info">Afficher les photos</a>
       </div>
 		<?php // AFFICHAGE DES PHOTOS
