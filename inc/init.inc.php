@@ -19,9 +19,9 @@ session_start();
 // d�finition de la constante pour le chemin absolu ainsi que pour la racine serveur
 // racine site
 // /!\ CHEMIN a changer selon votre arborescence tant que gitignore ne fonctionne pas.
-define("URL","/pictmachine/");
+define("URL","/pictmachine/"); // ALEX TU DOIS COMMENTER CETTE LIGNE
 
-// define("URL","/sitephoto/");
+// define("URL","/timemachine/"); ALEX DECOMMENTE CETTE LIGNE POUR QUE CA MARCHE
 
 
 //racine serveur

@@ -1,7 +1,7 @@
 <?php
 require("inc/init.inc.php");
 
-//
+// CODE DE VERIFICATION
 if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
 {
 	session_destroy();
@@ -63,9 +63,8 @@ if(isset($_POST['pseudo']) && isset($_POST['password']))
 	else
 	{
 		$message .= '<div class="alert alert-danger" role="alert" style="margin-top:20px;">Attention les informations saisies sont erronées<br />Veuillez recommencer</div>';
-	}
-	
-}	
+	}	
+}
 
 
 // la ligne suivant commence les affichages dans la page
@@ -74,7 +73,7 @@ require("inc/nav.inc.php");
 echo'<pre>';print_r($_SESSION);echo '</pre>';
 ?>
   
-
+<!-- Commentaire pour tester un require connxion dans index
 <div class="container">
 
     <div class="starter-template">
@@ -100,8 +99,8 @@ echo'<pre>';print_r($_SESSION);echo '</pre>';
 			</div>
 		</form>
 	 </div>
-</div><!-- /.container -->
+</div><!-- /.container - -> -->
 
 
 <?php
-require("inc/footer.inc.php");
+//require("inc/footer.inc.php");
