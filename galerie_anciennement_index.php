@@ -1,6 +1,11 @@
 <?php
 require("inc/init.inc.php");
 
+/*
+ANCIENNEMENT INDEX DE PHILIPPE DEBUGGE PAR ALEXANDRE => FONCTIONNE
+présent sur branche gestionphotosAF uniquement
+*/
+
 $liste_article = $pdo->query("SELECT * FROM pictures");
 
 // requete de récupération de tous les produits
