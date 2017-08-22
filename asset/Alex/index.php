@@ -1,4 +1,5 @@
 <?php
+// assets/alex
 require("inc/init.inc.php");
 
 $liste_article = $pdo->query("SELECT * FROM pictures");
@@ -18,10 +19,6 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$condition .= " WHERE country = :country ";
 		$arg_country = true;		
 		$filtre_country = $_POST['country'];	
-		
-		/* $liste_article = $pdo->prepare("SELECT * FROM article WHERE country = :country");
-		$liste_article->bindParam(":country", $filtre_country, PDO::PARAM_STR);
-		$liste_article->execute();		*/ 
 	}
 	
 	if(!empty($_POST['city']))
@@ -52,9 +49,6 @@ if($_POST) // équivaut à if(!empty($_POST))
 	
 	$liste_article = $pdo->prepare("SELECT * FROM $var1 $condition");
 	
-	//$liste_article = $pdo->prepare("SELECT * FROM pictures $condition");
-	//$liste_article = $pdo->prepare("SELECT * FROM tags_picture, pictures WHERE  pictures.id = tags_picture.pictures_id $condition");
-	
 	if($arg_country) // si $arg_country == true alors il faut fournir l'argument country
 	{
 		$liste_article->bindParam(":country", $filtre_country, PDO::PARAM_STR);
@@ -68,25 +62,8 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$liste_article->bindParam(":tagspicture", $filtre_tag, PDO::PARAM_STR);
 	}
 
-	// en cours de développement (tags)
-	
-	echo '<pre>'; var_dump($liste_article); echo '</pre>';
-	echo '<pre>'; var_dump($filtre_tag); echo '</pre>';
 	$liste_article->execute();		
 }
-/*
-elseif(!empty($_GET['categorie']))
-{
-	$cat = $_GET['categorie'];
-	$liste_article = $pdo->prepare("SELECT * FROM article WHERE categorie = :categorie");
-	$liste_article->bindParam(":categorie", $cat, PDO::PARAM_STR);
-	$liste_article->execute();
-}
-*/
-
-// requete de récupération des différentes catégories en BDD
-//$liste_categorie = $pdo->query("SELECT DISTINCT categorie FROM article");
-
 
 // requete de récupération des différentes country en BDD
 $liste_country = $pdo->query("SELECT DISTINCT country FROM pictures ORDER BY country");
@@ -112,7 +89,6 @@ require("inc/nav.inc.php");
                 <a href="#services" class="page-scroll btn btn-xl">Where past and present mingle</a>
             </div>
         </div>
-		<?php // echo $message; // messages destinés à l'utilisateur ?>
 		<?= $message; // cette balise php inclue un echo // cette ligne php est equivalente à la ligne au dessus. ?>
     </header>
 
@@ -246,18 +222,7 @@ require("inc/nav.inc.php");
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
                 </div>
 				<div class="col-sm-2">
-						<?php 
-					
-						// récupérer toutes les catégories en BDD et les afficher dans une liste ul li sous forme de lien a href avec une information GET par exemple: ?categorie=pantalon 
-						/*
-						echo '<ul class="list-group">';
-						echo '<li class="list-group-item"><a href="index.php">Tous les articles</a></li>';
-						while($categorie = $liste_categorie->fetch(PDO::FETCH_ASSOC))
-						{
-							echo '<li class="list-group-item"><a href="?categorie=' . $categorie['categorie'] . '">' . $categorie['categorie'] . '</a></li>';
-						}
-						echo '</ul>';
-						echo '<hr />';*/
+						<?php
 						echo '<form method="post" action="">';
 						
 						

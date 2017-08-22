@@ -1,5 +1,13 @@
 <?php
+// assets/alex
 // Menu supp réservé aux admins
+
+// code de déconnexion
+if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
+{
+  session_destroy();
+  header("location:index.php");
+}
 
 $nav_admin = '
 <div id="navbar-collapse" class="collapse navbar-collapse">
@@ -22,6 +30,8 @@ $nav_admin = '
             </button>
           <a class="navbar-brand page-scroll"  href="<?php echo URL; ?>index.php"><span class="fa fa-camera"></span> TimeMachine</a> <!-- href="#page-top" -->
         </div>
+
+
          <!-- Collecter the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
@@ -63,6 +73,7 @@ $nav_admin = '
                     if(!users_co())
                     {
               ?>
+                <!-- diff de code a analyser ->  pas de href dans les buttons -->
                 <div class="btn-group">
                  <!-- Button trigger modal -->  
                   <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#connexion">
@@ -76,7 +87,7 @@ $nav_admin = '
                     }
                     else{ 
               ?>
-                  <a  href="<?php echo URL;?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> Mon compte</a>
+                  <a href="<?php echo URL;?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> Mon compte</a>
                   <a href="<?php echo URL; ?>connexion.php?action=deconnexion" class="btn" type="submit"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
             </ul>
                 <?php // Menu supp réservé aux admins

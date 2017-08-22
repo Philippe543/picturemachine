@@ -1,4 +1,6 @@
 <?php
+// racine
+
 // code de déconnexion
 if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
 {
@@ -28,6 +30,8 @@ $nav_admin = '
             </button>
           <a class="navbar-brand page-scroll"  href="<?php echo URL; ?>index.php"><span class="fa fa-camera"></span> TimeMachine</a> <!-- href="#page-top" -->
         </div>
+
+        
          <!-- Collecter the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
@@ -35,18 +39,21 @@ $nav_admin = '
               <a href="#page-top"></a>
             </li>
             <li>
-               <a href="<?php echo URL; ?>index.php">Accueil</a>
+               <a href="<?php echo URL; ?>index.php#page-top">Accueil</a>
             </li>
             <li>
-               <a class="page-scroll" href="#portfolio">Galeries</a>
+              <a class="page-scroll" href="<?php echo URL; ?>index.php#services">Services</a>
             </li>
             <li>
-              <a class="page-scroll" href="#about">About</a>
+               <a class="page-scroll" href="index.php#galeries">Galeries</a>
             </li>
             <li>
-              <a class="page-scroll" href="#team">&#201;quipe</a>
+              <a class="page-scroll" href="<?php echo URL; ?>index.php#story">Story</a>
             </li>
             <li>
+              <a class="page-scroll" href="<?php echo URL; ?>index.php#team">&#201;quipe</a>
+            </li>
+            <li><!-- va devenir un modal -->
               <a class="page-scroll" href="#contact">Contact</a>
             </li>
              <!-- Barre de recherche -->  
@@ -66,17 +73,17 @@ $nav_admin = '
                     if(!utilisateur_est_connecte())
                     {
               ?>
+                <!-- diff de code a analyser -> pas de href dans les buttons -->
                 <div class="btn-group">
-                  <button data-toggle="modal" data-target="#login-modal" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span>
-                  <a href="#"> Connexion</a></button>
-                  <button href="<?php echo URL; ?>inscription.php" data-toggle="modal" data-target="#login-modal" type="submit" class="btn btn-default" >Inscription</button>
+                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#connexion">Connexion</button>
+                  <button data-toggle="modal" data-target="#inscription" type="submit" class="btn btn-default" >Inscription</button>
                 </div>
             </ul><!-- fermeture ul si user non connecté -->
-<!-- // pb headers already sent by (output started at C:\xampp\htdocs\pictmachine\inc\nav.inc.php:75) -->
+
               <?php
                     } else { // si user connecté
               ?>
-                  <a  href="<?php echo URL; ?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> Mon compte</a>
+                  <a href="<?php echo URL; ?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> Mon compte</a>
                   <a href="<?php echo URL; ?>?action=deconnexion" class="btn" type="submit"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
             </ul><!-- fermeture ul si user connecté -->
                 <?php // Menu supp réservé aux admins
@@ -139,6 +146,7 @@ $nav_admin = '
       }	
     }
     ?>
+    <!-- VERIFIER OU EST LA MODAL DE CONNEXION D'ALEX --> 
     <!-- affichage modal connexion -->
     <div class="row">
         <div class="col-sm-4" >

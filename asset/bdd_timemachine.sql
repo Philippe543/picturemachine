@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 21 Août 2017 à 11:59
+-- Généré le :  Mar 22 Août 2017 à 17:35
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  5.6.30
 
@@ -60,7 +60,7 @@ CREATE TABLE `pictures` (
   `header` varchar(255) DEFAULT NULL,
   `content` text,
   `date_record` datetime NOT NULL,
-  `date_picture` date NOT NULL,
+  `date_picture` year(4) NOT NULL,
   `country` varchar(255) NOT NULL,
   `city` varchar(255) NOT NULL,
   `photo` varchar(255) NOT NULL,
@@ -72,13 +72,14 @@ CREATE TABLE `pictures` (
 --
 
 INSERT INTO `pictures` (`id`, `title`, `header`, `content`, `date_record`, `date_picture`, `country`, `city`, `photo`, `users_id`) VALUES
-(36, 'statue de la liberté', 'statue de la liberté', 'statue de la liberté', '2017-08-17 14:41:50', '2017-10-01', 'Etats-unis', 'New York', '_NewYork-CityMain-780x520-20.jpg', 24),
-(37, 'Empire state Building', 'Empire state Building', 'Empire state Building', '2017-08-17 14:43:14', '2014-10-15', 'Etats-unis', 'New York', '_New-York Empire State Building.jpg', 24),
-(38, 'Golden Gate Bridge', 'Golden Gate Bridge', 'Golden Gate Bridge', '2017-08-17 14:44:54', '2015-03-25', 'Etats-unis', 'san Francisco', '_san-francisco-news-summer-code-camp.jpg', 24),
-(39, 'Place Saint Marc', 'La place Saint Marc à Venise', 'La place Saint Marc à Venise', '2017-08-17 14:48:46', '2017-10-01', 'Italie', 'Venise', '_le grandcanalvenise.jpg', 25),
-(40, 'La tour de Pise', 'La tour de Pise', 'La tour de Pise', '2017-08-17 14:51:06', '2014-10-15', 'Italie', 'Pise', '_tour-pise-1.jpg', 25),
-(41, 'Le Colisée de Rome', 'Le Colisée de Rome', 'Le Colisée de Rome', '2017-08-17 15:00:14', '2015-03-25', 'Italie', 'Rome', '_800px-Colosseum_Roma_2009-720x340.jpg', 26),
-(42, 'Grand Canyon', 'Grand Canyon', 'Grand Canyon', '2017-08-17 15:24:36', '2017-10-01', 'Etats-unis', 'Grand Canyon', '_Stock_Grand_Canyon_084fa36e-0a2d-4560-9dbd-bbd0d93d6eb8.jpg', 27);
+(36, 'statue de la liberté', 'statue de la liberté', 'statue de la liberté', '2017-08-17 14:41:50', 2017, 'Etats-unis', 'New York', '_NewYork-CityMain-780x520-20.jpg', 24),
+(37, 'Empire state Building', 'Empire state Building', 'Empire state Building', '2017-08-17 14:43:14', 2014, 'Etats-unis', 'New York', '_New-York Empire State Building.jpg', 24),
+(38, 'Golden Gate Bridge', 'Golden Gate Bridge', 'Golden Gate Bridge', '2017-08-17 14:44:54', 2015, 'Etats-unis', 'san Francisco', '_san-francisco-news-summer-code-camp.jpg', 24),
+(39, 'Place Saint Marc', 'La place Saint Marc à Venise', 'La place Saint Marc à Venise', '2017-08-17 14:48:46', 2017, 'Italie', 'Venise', '_le grandcanalvenise.jpg', 25),
+(40, 'La tour de Pise', 'La tour de Pise', 'La tour de Pise', '2017-08-17 14:51:06', 2014, 'Italie', 'Pise', '_tour-pise-1.jpg', 25),
+(41, 'Le Colisée de Rome', 'Le Colisée de Rome', 'Le Colisée de Rome', '2017-08-17 15:00:14', 2015, 'Italie', 'Rome', '_800px-Colosseum_Roma_2009-720x340.jpg', 26),
+(42, 'Grand Canyon', 'Grand Canyon', 'Grand Canyon', '2017-08-17 15:24:36', 2017, 'Etats-unis', 'Grand Canyon', '_Stock_Grand_Canyon_084fa36e-0a2d-4560-9dbd-bbd0d93d6eb8.jpg', 27),
+(43, 'test d\'insertion', 'c\'est un test', 'blablabla', '2017-08-21 15:51:20', 2017, 'france', 'paris', '_20-Mozambique-1-2009.jpg', 23);
 
 -- --------------------------------------------------------
 
@@ -112,7 +113,7 @@ CREATE TABLE `stories` (
 
 CREATE TABLE `tags_picture` (
   `id` int(3) NOT NULL,
-  `keywords` varchar(45) DEFAULT NULL,
+  `tag_word` varchar(45) DEFAULT NULL,
   `pictures_id` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -120,29 +121,32 @@ CREATE TABLE `tags_picture` (
 -- Contenu de la table `tags_picture`
 --
 
-INSERT INTO `tags_picture` (`id`, `keywords`, `pictures_id`) VALUES
+INSERT INTO `tags_picture` (`id`, `tag_word`, `pictures_id`) VALUES
 (15, 'statue de la liberté ', 36),
-(16, ' New York', 36),
-(17, ' Etats Unis', 36),
+(16, 'New York', 36),
+(17, 'Etats Unis', 36),
 (18, 'Empire State Building', 37),
-(19, ' New York', 37),
-(20, ' Etats Unis', 37),
+(19, 'New York', 37),
+(20, 'Etats Unis', 37),
 (21, 'pont', 38),
-(22, ' Golden Gate Bridge', 38),
-(23, ' Etats unis', 38),
-(24, ' paysage', 38),
+(22, 'Golden Gate Bridge', 38),
+(23, 'Etats unis', 38),
+(24, 'paysage', 38),
 (25, 'Venise', 39),
-(26, ' Grand Canal', 39),
-(27, ' Italie', 39),
+(26, 'Grand Canal', 39),
+(27, 'Italie', 39),
 (28, 'Tour de Pise', 40),
-(29, ' Pise', 40),
-(30, ' Italie', 40),
+(29, 'Pise', 40),
+(30, 'Italie', 40),
 (31, 'colisée', 41),
-(32, ' rome', 41),
-(33, ' Italie', 41),
+(32, 'rome', 41),
+(33, 'Italie', 41),
 (34, 'Grand Canyon', 42),
-(35, ' Nevada', 42),
-(36, ' Etats Unis', 42);
+(35, 'Nevada', 42),
+(36, 'Etats Unis', 42),
+(37, 'MINUSCULE', 43),
+(38, 'CAPITALE', 43),
+(39, 'MAJUSCULE', 43);
 
 -- --------------------------------------------------------
 
@@ -178,8 +182,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `gender`, `pseudo`, `email`, `password`, `status`) VALUES
-(1, 'Jacques', 'Maa', '', 'philippe', 'jacquesdurand@gmail.com', '123sol', 0),
-(7, 'Jacques', 'Martin', 'm', 'philippe2', 'jacquesdurand2@gmail.com', '123sol', 0),
+(1, 'Jacques', 'Maa', 'f', 'philippe', 'jacquesdurand@gmail.com', '123sol', 0),
+(7, 'Jacques', 'Martin', 'f', 'philippe2', 'jacquesdurand2@gmail.com', '123sol', 0),
 (9, 'Jacques', 'Martin', 'm', 'philippe3', 'jacquesdurand3@gmail.com', '123sol', 0),
 (11, 'Jacques', 'Martin', 'm', 'philippe4', 'jacquesdurand4@gmail.com', '123sol', 0),
 (12, 'Jacques', 'Martin', 'm', 'philippe5', 'jacquesdurand5@gmail.com', '123sol', 0),
@@ -190,7 +194,7 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `gender`, `pseudo`, `email`,
 (17, 'Paul', 'Dur', 'm', 'pauldurand4', 'pauldurand4@gmail.com', '123sol', 0),
 (18, 'Paul', 'Dur', 'm', 'pauldurand5', 'pauldurand5@gmail.com', '123sol', 0),
 (19, 'Paul', 'Dur', 'm', 'pauldurand6', 'pauldurand6@gmail.com', '123sol', 0),
-(21, 'Paul', 'Dur', 'm', 'pauldurand7', 'pauldurand7@gmail.com', '123sol', 0),
+(21, 'Paul', 'Dur', 'f', 'pauldurand7', 'pauldurand7@gmail.com', '123sol', 0),
 (22, 'Paul', 'Dur', 'm', 'pauldurand8', 'pauldurand8@gmail.com', '123sol', 0),
 (23, 'admin', 'admin', 'm', 'admin', 'admin@gmail.com', 'admin', 1),
 (24, 'Urilisateura', 'Utilisateura', 'm', 'Utilisateura', 'utilisateura@gmail.com', '123sol', 0),
@@ -245,7 +249,8 @@ ALTER TABLE `stories`
 --
 ALTER TABLE `tags_picture`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_tags ingredient_pictures1_idx` (`pictures_id`);
+  ADD KEY `fk_tags ingredient_pictures1_idx` (`pictures_id`),
+  ADD KEY `pictures_id` (`pictures_id`);
 
 --
 -- Index pour la table `tags_theme`
@@ -280,12 +285,12 @@ ALTER TABLE `comments_story`
 -- AUTO_INCREMENT pour la table `pictures`
 --
 ALTER TABLE `pictures`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT pour la table `tags_picture`
 --
 ALTER TABLE `tags_picture`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
