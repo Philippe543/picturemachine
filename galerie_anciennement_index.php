@@ -46,10 +46,16 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$filtre_city = $_POST['city'];	
 	}
 	
+
+	/*----------------------------------------------------*/
+	/*----------------------------------------------------*/
+	/*--------------------FILTRE ANNEE--------------------*/
+	/*----------------------------------------------------*/
+	/*----------------------------------------------------*/
+
+
 	// Recherche des photos par année Philippe
-	//année1
-	
-	
+	//année1	
 	if(!empty($_POST['date_picture1'] && $_POST['date_picture1'] <= $_POST['date_picture2']))
 	{
 		$condition .= "WHERE date_picture BETWEEN :date_picture1 AND :date_picture2 ";
@@ -127,14 +133,12 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		$liste_article->bindParam(":city", $filtre_city, PDO::PARAM_STR);
 	}
-	
+
 	if($arg_year) // si $arg_year == true alors il faut fournir l'argument year
 	{
 		$liste_article->bindParam(":date_picture1", $filtre_year1, PDO::PARAM_STR);
 		$liste_article->bindParam(":date_picture2", $filtre_year2, PDO::PARAM_STR);
-	}
-	
-	
+	}	
 	
 	if($arg_tag) // si $arg_tag == true alors il faut fournir l'argument tag
 	{
@@ -234,7 +238,13 @@ echo '<pre>'; print_r($_POST); echo '</pre>';
 						echo '<option>' . $city['city'] . '</option>';
 					}
 					echo '  </select></div>';
+		
 					
+	/*----------------------------------------------------*/
+	/*----------------------------------------------------*/
+	/*--------------------FILTRE ANNEE--------------------*/
+	/*----------------------------------------------------*/
+	/*----------------------------------------------------*/
 					// affichage des années
 					//année 1
 					echo '<div class="form-group">

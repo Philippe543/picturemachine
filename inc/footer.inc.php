@@ -1,11 +1,4 @@
-    <!-- Section Map -->
-    <section id="map" class="content-section text-center">
-    <div class="container">
-            <div class="col-xl-8 col-xl-offset-2">
-            <img src="" alt="" class="img-responsive">
-            </div>
-    </div>      
-</section>
+
 
 <!-- Footer -->
 <footer>

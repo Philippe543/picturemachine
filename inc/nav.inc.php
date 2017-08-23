@@ -269,8 +269,8 @@ $nav_admin = '
                 <div class="btn-group">
                       <!--
                   <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#connexion">Connexion</button>-->
-                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login-modal">Connexion</button>
-                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sign-in-modal">Inscription</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Connexion</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sign-in-modal">Inscription</button>
                 </div>
             </ul><!-- fermeture ul si user non connecté -->
 

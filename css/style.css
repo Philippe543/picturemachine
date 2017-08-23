@@ -1,3 +1,13 @@
+/* affichage var_dump */
+pre {
+    margin-top: 20px;
+}
+
+
+
+
+
+
 /* Tentative d'afficher les liens de la navbar avant le début du scroll */
 
 .navbar-custom .nav li a {
@@ -5,5 +15,5 @@
 }
 
 .navbar-custom {
-    background: #222222;
+    background: #222222;    
 }

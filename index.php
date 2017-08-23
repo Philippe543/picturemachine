@@ -4,15 +4,19 @@ require("inc/init.inc.php");
 
 $liste_article = $pdo->query("SELECT * FROM pictures");
 
+// déclaration de variables
+$date1 = null;
+$date2 = null;
+$condition = "";
+$arg_country = false;
+$arg_city = false;
+$arg_tag=false;
+$arg_year = false;
+$var1 = "pictures";
+
 // requete de récupération de tous les produits
 if($_POST) // équivaut à if(!empty($_POST))
 {
-	$condition = "";
-	$arg_country = false;
-	$arg_city = false;
-	$arg_tag=false;
-	$var1 = "pictures";
-
 
 	if(!empty($_POST['country']))
 	{
@@ -36,8 +40,7 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$filtre_city = $_POST['city'];	
 	}
 	
-	// Recherche des photos avec tags (en cours de développement (tags)
-	
+	// Recherche des photos avec tags (en cours de développement (tags)	
 	if (!empty($_POST['tags']))
 	{
 		$arg_tag =true;
@@ -45,9 +48,57 @@ if($_POST) // équivaut à if(!empty($_POST))
 		$var1 .= ", tags_picture";
 		$condition = " WHERE pictures.id = tags_picture.pictures_id AND tags_picture.tag_word = :tagspicture";
 		$filtre_tag = $_POST['tags'];
+    }
+    
+
+    
+    // Recherche des photos par dates ou intervalle
+
+    // $date1 et $date2 sont null
+    if(!empty($_POST['date_picture1']))
+        $date1 = $_POST['date_picture1'];
+        
+    if(!empty($_POST['date_picture2']))
+        $date2 = $_POST['date_picture2'];
+
+
+    // si les 2 champs date sont non null
+    if($date1 && $date2) {
+        $arg_year = true;
+        $filtre_year1 = $date1;
+        $filtre_year2 = $date2;
+
+        if($date1 <= $date2) {
+            $condition .= " WHERE date_picture BETWEEN :date_picture1 AND :date_picture2 ";	
+        } else { // sinon j'inverse la condition
+            $condition .= " WHERE date_picture BETWEEN :date_picture2 AND :date_picture1 ";
+        }        
+    } elseif ($date1 && !$date2) {
+        $arg_year = true;
+        $filtre_year1 = $date1;
+        $filtre_year2 = "";
+        $condition .= " WHERE date_picture = :date_picture1";
+    } elseif (!$date1 && $date2) {
+        $arg_year = true;
+        $filtre_year1 = "";
+        $filtre_year2 = "$date2";
+        $condition .= " WHERE date_picture = :date_picture2";
+    } 
+
+
+
+
+    $liste_article = $pdo->prepare("SELECT * FROM $var1 $condition");
+
+	if($arg_year) // si $arg_year == true alors il faut fournir l'argument year
+	{
+        if(!empty($filtre_year1))
+        $liste_article->bindParam(":date_picture1", $filtre_year1, PDO::PARAM_STR);
+        if(!empty($filtre_year2))
+		$liste_article->bindParam(":date_picture2", $filtre_year2, PDO::PARAM_STR);
 	}
-	
-	$liste_article = $pdo->prepare("SELECT * FROM $var1 $condition");
+
+
 	
 	if($arg_country) // si $arg_country == true alors il faut fournir l'argument country
 	{
@@ -61,7 +112,8 @@ if($_POST) // équivaut à if(!empty($_POST))
 	{
 		$liste_article->bindParam(":tagspicture", $filtre_tag, PDO::PARAM_STR);
 	}
-
+	
+	
 	$liste_article->execute();		
 }
 
@@ -80,7 +132,9 @@ $liste_tags  = $pdo->query("SELECT DISTINCT tag_word FROM tags_picture, pictures
 ------------------------------------------------------------------------*/
 require("inc/header.inc.php"); 
 require("inc/nav.inc.php");
-echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
+
+
+
 ?>
 
 <!-- affichage message -->
@@ -96,6 +150,13 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
         </div>
 		<?= $message; // cette balise php inclue un echo // cette ligne php est equivalente à la ligne au dessus. ?>
     </header>
+
+<?php  //////////////////////////////////////////////////////////////// echo de test
+echo '<pre> $date1 : '; var_dump($date1); echo '</pre>';
+echo '<pre> $date2 : '; var_dump($date2); echo '</pre>';
+echo '<pre> requete date : '; var_dump('SELECT * FROM ' . $var1 . $condition); echo '</pre>';
+?>
+
 
 <!-- Services Section -->
     <section id="services">
@@ -223,7 +284,6 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
 			<div class="row">
 				<div class="col-lg-12 text-center">
                     <h2 class="section-heading">Galeries</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
                 </div>
 				<div class="col-sm-2">
 						<?php
@@ -267,17 +327,55 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
 							}
 							echo '  </select></div>';
 							
-							
+                            
+                            
+
+                            // affichage des années
+                            //année 1
+                            echo '<div class="form-group">
+                            <label for="date_picture1">Année de début</label>
+                            <select name="date_picture1" id="date_picture1" class="form-control">
+                            <option></option>';
+                                for($i= date('Y'); $i >= 1900; $i--){
+                                    echo '<option>' . $i . '</option>';
+                                }
+                            /*while($date_picture1 = $liste_year->fetch(PDO::FETCH_ASSOC))
+                            {
+                                echo '<option>' . $date_picture1['date_picture'] . '</option>';
+                            }*/
+                            echo '  </select></div>';
+                            
+                            //année 2
+                            echo '<div class="form-group">
+                                    <label for="date_picture2">Année de fin</label>
+                                    <select name="date_picture2" id="date_picture2" class="form-control">
+                                    <option></option>';
+                                        for($i = date('Y'); $i >= 1900; $i--){
+                                            echo '<option>' . $i . '</option>';
+                                        }
+                            /*while($date_picture2 = $liste_year->fetch(PDO::FETCH_ASSOC))
+                            {
+                                echo '<option>' . $date_picture2['date_picture'] . '</option>';
+                            }*/
+                            echo '  </select></div>';
+
+
+
+							// bouton de validation dde la recherche
 							echo '<div class="form-group">
-								<button type="submit"  name="filtrer" id="filtrer" class="form-control btn btn-primary">Valider</button>
-							</div>';				
+                            <button type="submit"  name="filtrer" id="filtrer" class="form-control btn btn-primary">Valider</button>
+                            </div>';
+
+
+
 						
 						echo '</form>';
 					?>
 				</div>
-		
+        
+                <!-- GALERIE -->
 				<div class="col-sm-10">
-					<?php // afficher tous les produits dans cette page par exemple: un block avec image + titre + prix produit
+					<?php // afficher toutes les photos dans cette page par exemple: un block avec image + titre + prix produit
 			
 					echo '<div class="row">';
 					$compteur = 0;
@@ -293,9 +391,8 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
 						//echo '<div class="panel-heading"><img src="' . URL . 'img/timestorrylogo.png" class="img-responsive" /></div>';
 						echo '<div class="panel-body text-center">';
 						echo '<h5>' . $article['title'] . '</h5>';
-						echo '<img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" />';
-						
-						echo '<hr />';
+                        echo '<img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /><br>';
+                        echo $article['date_picture'];
 						//echo '<a href="fiche_article.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
 						
 						echo '</div></div></div>';
