@@ -2,7 +2,6 @@
 // assets/alex
 require("inc/init.inc.php");
 
-$liste_article = $pdo->query("SELECT * FROM pictures");
 
 // déclaration de variables
 $date1 = null;
@@ -14,11 +13,13 @@ $arg_tag=false;
 $arg_year = false;
 $var1 = "pictures";
 
+$liste_article = $pdo->query("SELECT * FROM $var1 $condition");
+
 // requete de récupération de tous les produits
 if($_POST) // équivaut à if(!empty($_POST))
 {
 
-	if(!empty($_POST['country']))
+    if(!empty($_POST['country']))
 	{
 		$condition .= " WHERE country = :country ";
 		$arg_country = true;		
@@ -43,10 +44,10 @@ if($_POST) // équivaut à if(!empty($_POST))
 	// Recherche des photos avec tags (en cours de développement (tags)	
 	if (!empty($_POST['tags']))
 	{
-		$arg_tag =true;
+		$arg_tag = true;
 		// requete jointure table photos et tags
 		$var1 .= ", tags_picture";
-		$condition = " WHERE pictures.id = tags_picture.pictures_id AND tags_picture.tag_word = :tagspicture";
+		$condition = "WHERE pictures.id = tags_picture.pictures_id AND tags_picture.tag_word = :tagspicture";
 		$filtre_tag = $_POST['tags'];
     }
     
@@ -154,6 +155,8 @@ require("inc/nav.inc.php");
 <?php  //////////////////////////////////////////////////////////////// echo de test
 //echo '<pre> $date1 : '; var_dump($date1); echo '</pre>';
 //echo '<pre> $date2 : '; var_dump($date2); echo '</pre>';
+//echo '<pre> requete : '; var_dump($liste_article); echo '</pre>';
+//echo '<pre> $_POST : '; var_dump($_POST); echo '</pre>';
 //echo '<pre> requete date : '; var_dump('SELECT * FROM ' . $var1 . $condition); echo '</pre>';
 ?>
 
@@ -309,12 +312,19 @@ require("inc/nav.inc.php");
 						
 						echo '<div class="col-sm-3">';
 						echo '<div class="panel panel-default">';
-						//echo '<div class="panel-heading"><img src="' . URL . 'img/timestorrylogo.png" class="img-responsive" /></div>';
 						echo '<div class="panel-body text-center">';
 						echo '<h5>' . $article['title'] . '</h5>';
-                        echo '<a href="affichage_photo.php?id=' . $article['id'] . '" class="btn btn-primary"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
-                        echo $article['date_picture'];
-						//echo '<a href="fiche_article.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
+                        
+                        // si on recherche par tags, alors la requete change et on appelle $article['pictures_id']
+                        if(isset($article['pictures_id'])) {
+                            echo '<a href="affichage_photo.php?id=' . $article['pictures_id'] . '" class="btn btn-primary"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
+                        } else { // sinon...
+                            echo '<a href="affichage_photo.php?id=' . $article['id'] . '" class="btn btn-primary"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
+                        }
+
+
+
+                        echo $article['date_picture'];;
 						
 						echo '</div></div></div>';
 					}				
