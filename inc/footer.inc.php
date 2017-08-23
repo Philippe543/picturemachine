@@ -20,10 +20,7 @@
             </div>
         </div>
     </section>
-    <div class="separator-wave">
-        <div class="separator-wave-inner"> 
-        </div>
-    </div>
+
     <div class="container text-center">
         <h4>&copy; 2017 - TimeMachine</h4>
     </div>

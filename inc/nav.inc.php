@@ -263,12 +263,8 @@ $nav_admin = '
               <?php 
                     if(!utilisateur_est_connecte())
                     {
-              ?>
-                <!-- diff de code a analyser -> pas de href dans les buttons -->
-                <!-- REACTIVER LES BOUTONS MODALS (faire le modal inscription) -->
-                <div class="btn-group">
-                      <!--
-                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#connexion">Connexion</button>-->
+              ?>                
+                <div class="btn-group">                  
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Connexion</button>
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sign-in-modal">Inscription</button>
                 </div>
@@ -304,7 +300,7 @@ $nav_admin = '
             <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="loginmodal-container">
-                        <h3><span style="color:#337ab7; text-align=center;"><i>Connectez-vous</i></h3><br>
+                        <h3><span style="color:#337ab7; text-align=center;"><i>Connectez-vous</i></span></h3><br>
                             <form method="post" action="">
                                 <div class="form-group">
                                     <input type="text" name="pseudo" id="pseudo" class="form-control" placeholder="PSEUDO" style="font-style:italic;" />
@@ -314,7 +310,7 @@ $nav_admin = '
                                 </div>
                                 <div class="form-group">
                                     <!-- rajout form-control -->
-                                    <button type="submit" name="login" class="btn btn-primary form-control" >Connexion</span>
+                                    <button type="submit" name="login" class="btn btn-primary form-control" >Connexion</button>
                                 </div>
                             </form>
                     </div>
@@ -331,7 +327,7 @@ $nav_admin = '
             <div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="loginmodal-container">
-                        <h3><span style="color:#337ab7; text-align=center;"><i>Inscrivez-vous</i></h3><br>
+                        <h3><span style="color:#337ab7; text-align=center;"><i>Inscrivez-vous</i></span></h3><br>
 
                             <!-- début formulaire -->
                             <form method="post" action="">

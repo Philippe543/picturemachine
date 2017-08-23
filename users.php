@@ -300,7 +300,7 @@ require("inc/nav.inc.php");
 $id = $_SESSION["utilisateur"]['id'];
 
 $query = <<<EOS
-SELECT* FROM pictures p
+SELECT * FROM pictures p
 JOIN users u ON p.users_id = u.id
 WHERE p.users_id = $id
 ORDER BY p.date_picture
@@ -314,20 +314,7 @@ EOS;
     while($article = $liste_article->fetch(PDO::FETCH_ASSOC))
     {
         
-        // afin de ne pas avoir de souci avec le float, on ferme et on ouvre une ligne bootstrap (class="row") pour gérer les lignes d'affichage.
-        //if($compteur%4 == 0 && $compteur != 0) { echo '</div><div class="row">'; }
-        //$compteur++;
-        
-        //echo '<div class="col-sm-3">';
-        //echo '<div class="panel panel-default">';
-        //echo '<div class="panel-heading"><img src="' . URL . 'img/timestorrylogo.png" class="img-responsive" /></div>';
-        //echo '<div class="panel-body text-center">';
-        //echo '<h5>' . $article['title'] . '</h5>';
-        //echo '<img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /><br>';
-        //echo $article['date_picture'];
-        //echo '<a href="fiche_article.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
-        
-        //echo '</div></div></div>';
+
         
 echo '<li>';
     echo '<div class="timeline-image">';
