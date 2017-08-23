@@ -103,7 +103,7 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">bibliothèque de photos</h3>
                 </div>
             </div>
             <div class="row text-center">
@@ -112,8 +112,8 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-camera fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h4 class="service-heading">E-Commerce</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                    <h4 class="service-heading">Les Photographies</h4>
+                    <p class="text-muted">Visualisez des photos du monde entier et <br>de toutes les époques.<br>Triez et filtrez selon vos préférences, par dates, par pays, par ville, par mot-clé grâce à nos outils de recherche performant.</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -121,7 +121,7 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
                         <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">Le partage</h4>
-                    <p class="text-muted">Il n’y a pas d’erreur, la mode est au partage. <i class="fa fa-smile-o"></i>Depuis plusieurs années, on entend parler de nouvelles tendances dont l’analyse montre clairement la place de l’humain par la satisfaction de donner quelque chose à autrui et à la fois à lui-même.</p>
+                    <p class="text-muted">Il n’y a pas d’erreur, la mode est au partage.<br>Partagez vos photos avec le monde entier.<br>Consultez les photos de nos contributeurs.<br><i class="fa fa-smile-o"></i></p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -129,20 +129,19 @@ echo '<pre>$_POST : '; var_dump($_POST); echo '</pre>';
                         <i class="fa fa-globe fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">Web Security</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                    <p class="text-muted">Stockage sécurisé de vos photos.<br>Accédez à votre stockage illimité<br> depuis n'importe quel <br>PC / Tablette et Smartphone.</p>
                 </div>
             </div>
         </div>
     </section>
 
 <!-- Story Section -->
-
 <section id="story">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">About</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading">Timeline</h2>
+                    <h3 class="section-subheading text-muted"></h3>
                 </div>
             </div>
             <div class="row">
