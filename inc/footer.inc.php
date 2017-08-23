@@ -6,7 +6,7 @@
     <section id="f_links" class="content-section">
         <div class="container text-center">
             <div class="col-xl-8">
-                <ul class="nav navbar-nav">   
+                <ul class="nav navbar-nav" id="menu_bas">   
                     <li>
                         <a href="#why">Pourquoi ?</a>
                     </li>

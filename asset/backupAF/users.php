@@ -170,30 +170,30 @@ require("inc/nav.inc.php");
 
 ?>
     <!-- Header -->
-<header>
-    <div class="container">
-        <div class="intro-text">
-            <div class="intro-lead-in">
-                <?php echo $_SESSION['utilisateur']['pseudo']; ?>
+        <header>
+            <div class="container">
+                <div class="intro-text">
+                    <div class="intro-lead-in">
+                        <?php echo $_SESSION['utilisateur']['pseudo']; ?>
+                    </div>
+                   <img src="img/avatar.png" class="img-responsive" style="display: inline-block; width: 140px;" alt="avatar"> <a href="#services" class="fa fa-camera"></a>
+                    <div class="">
+                        <div>
+                            <?php echo $_SESSION['utilisateur']['lastname'].'&nbsp'.$_SESSION['utilisateur']['firstname']; ?>
+                        </div>
+                            <div id="navbar-collapse" class="collapse navbar-collapse">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="#"> Ma story</a></li> <!-- modal x4 ? -->
+                                    <li><a href="#"> Galeries</a></li> 
+                                    <li><a href="#"> Photos</a></li>
+                                    <li><a href="#"> Mes infos</a></li>
+                                </ul>
+                            </div>
+                    
+                </div>
             </div>
-            <img src="img/avatar.png" class="img-responsive" style="display: inline-block; width: 140px;" alt="avatar"> <a href="#services" class="fa fa-camera"></a>
-            <div class="">
-                <div>
-                    <?php echo $_SESSION['utilisateur']['lastname'].'&nbsp'.$_SESSION['utilisateur']['firstname']; ?>
-                </div>
-                <div id="navbar-collapse" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#"> Ma story</a></li> <!-- modal x4 ? -->
-                        <li><a href="#"> Galeries</a></li> 
-                        <li><a href="#"> Photos</a></li>
-                        <li><a href="#"> Mes infos</a></li>
-                    </ul>
-                </div>
-            </div         
-        </div>
-    </div>
-    <?= $message; // balise php inclus un echo ?>
-</header>
+            <?= $message; // balise php inclus un echo ?>
+        </header>
         <div class="container">
             <div class="starter-template">
                 <?php // echo $message; //message destinés au users ?>
@@ -236,9 +236,7 @@ require("inc/nav.inc.php");
 	
 	 <?php // Affichage du formulaire d'enregistrement users  
         
-        if(isset($_GET['action']) && ($_GET['action'] == 'ajout'|| $_GET['action'] == 'modification'))
-        {
-    ?>
+           if(isset($_GET['action']) && ($_GET['action'] == 'ajout'|| $_GET['action'] == 'modification')) {?>
 
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
@@ -277,164 +275,9 @@ require("inc/nav.inc.php");
                 </div>
             </div>
         </div>
-    <?php 
-        }         // accolade correspondant à la condition sur l'affichage du formulaire 
+    <?php }         // accolade correspondant à la condition sur l'affichage du formulaire 
                    //if(isset($_GET['action'])&&$_GET['action'] == 'ajout');
-    ?>
+                ?>
 
-<!-- TIMELINE -->
-<section id="story">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Timeline</h2>
-                <h3 class="section-subheading text-muted"></h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="timeline">
-
-    <?php // afficher toutes les photos dans cette page par exemple: un block avec image + titre + prix produit
-
-$id = $_SESSION["utilisateur"]['id'];
-
-$query = <<<EOS
-SELECT* FROM pictures p
-JOIN users u ON p.users_id = u.id
-WHERE p.users_id = $id
-ORDER BY p.date_picture
-EOS;
-
-    $liste_article = $pdo->query($query);
-
-    //echo '<div class="row">';
-    
-    $compteur = 0;
-    while($article = $liste_article->fetch(PDO::FETCH_ASSOC))
-    {
-        
-        // afin de ne pas avoir de souci avec le float, on ferme et on ouvre une ligne bootstrap (class="row") pour gérer les lignes d'affichage.
-        //if($compteur%4 == 0 && $compteur != 0) { echo '</div><div class="row">'; }
-        //$compteur++;
-        
-        //echo '<div class="col-sm-3">';
-        //echo '<div class="panel panel-default">';
-        //echo '<div class="panel-heading"><img src="' . URL . 'img/timestorrylogo.png" class="img-responsive" /></div>';
-        //echo '<div class="panel-body text-center">';
-        //echo '<h5>' . $article['title'] . '</h5>';
-        //echo '<img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /><br>';
-        //echo $article['date_picture'];
-        //echo '<a href="fiche_article.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
-        
-        //echo '</div></div></div>';
-        
-echo '<li>';
-    echo '<div class="timeline-image">';
-            echo '<img height="200" width="200" class="img-circle img-responsive" src="' . URL . 'photo/' . $article['photo'] . '" alt="">';
-    echo '</div>';
-    echo '<div class="timeline-panel">';
-        echo '<div class="timeline-heading">';
-            echo '<h4>' . $article['date_picture'] . '</h4>';
-            echo '<h4 class="subheading">' . $article['title'] . '</h4>';
-        echo '</div>';
-        echo '<div class="timeline-body">';
-            echo '<h5 class="subheading">' . $article['header'] . '</h5>';
-            echo '<p class="text-muted">' . $article['content'] . '<p>';
-        echo '</div>';
-    echo '</div>';
-echo '</li>';
-
-    }				
-    
-    // echo '</div>';		 
-
-
-    ?>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Story Section
-<section id="story">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Timeline</h2>
-                <h3 class="section-subheading text-muted"></h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="timeline">
-                    <li>
-                        <div class="timeline-image">
-                            <img class="img-circle img-responsive" src="img/about/1.jpg" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>2009-2011</h4>
-                                <h4 class="subheading">Our Humble Beginnings</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="timeline-inverted">
-                        <div class="timeline-image">
-                            <img class="img-circle img-responsive" src="img/about/2.jpg" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>March 2011</h4>
-                                <h4 class="subheading">An Agency is Born</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="timeline-image">
-                            <img class="img-circle img-responsive" src="img/about/3.jpg" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>December 2012</h4>
-                                <h4 class="subheading">Transition to Full Service</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="timeline-inverted">
-                        <div class="timeline-image">
-                            <img class="img-circle img-responsive" src="img/about/4.jpg" alt="">
-                        </div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4>July 2014</h4>
-                                <h4 class="subheading">Phase Two Expansion</h4>
-                            </div>
-                            <div class="timeline-body">
-                                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="timeline-inverted">
-                        <div class="timeline-image">
-                            <h4>Be Part
-                                <br>Of Our
-                                <br>Story!</h4>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section> -->
 <?php 
 require("inc/footer.inc.php");
