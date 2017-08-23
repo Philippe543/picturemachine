@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 23 Août 2017 à 15:36
+-- Généré le :  Mer 23 Août 2017 à 17:27
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  5.6.30
 
@@ -177,7 +177,21 @@ INSERT INTO `pictures` (`id`, `title`, `header`, `content`, `date_record`, `date
 (144, 'Palais des pays étrangers Paris 1889', 'Palais des pays étrangers Paris 1889', 'Palais des pays étrangers Paris 1889', '2017-08-23 15:18:09', 1901, 'France', 'Paris', '_Paris_4.jpg', 23),
 (145, 'Tour Eiffel 1889', 'Tour Eiffel 1889', 'Tour Eiffel 1889', '2017-08-23 15:19:38', 1901, 'France', 'Paris', '_Paris_5.jpg', 23),
 (146, 'Champs de Mars 1889', 'Champs de Mars 1889', 'Champs de Mars 1889', '2017-08-23 15:20:49', 1901, 'France', 'Paris', '_Paris_6.jpg', 23),
-(147, 'Tour Eiffel 1889', 'Tour Eiffel 1889', 'Tour Eiffel 1889', '2017-08-23 15:22:32', 1901, 'France', 'Paris', '_Tower in 1889 for Exhibition.jpg', 23);
+(147, 'Tour Eiffel 1889', 'Tour Eiffel 1889', 'Tour Eiffel 1889', '2017-08-23 15:22:32', 1901, 'France', 'Paris', '_Tower in 1889 for Exhibition.jpg', 23),
+(148, 'Bangkok', 'Vue de la ville.', NULL, '0000-00-00 00:00:00', 2008, 'Thailande', 'Bangkok', '5-BKK-1-2008.jpg', 1),
+(149, 'Bangkok', 'Vue de la ville n2.', NULL, '2017-08-15 00:00:00', 2008, 'Thailande', 'Bangkok', '6-BKK-2-2008.jpg', 1),
+(150, 'Vacances à Bangkok', 'Vue de la ville n3.', 'Vue depuis une chambre d’hôtel.', '2017-08-15 00:00:00', 2008, 'Thaïlande', 'Bangkok', '7-BKK-3-2008.jpg', 1),
+(151, 'Bangkok 4', 'Vue de la ville n4.', 'Priviliegiez le skytrain ou les tuktuk.', '2017-08-15 00:00:00', 2008, 'Thaïlande', 'Bangkok', '8-BKK-4-2008.jpg', 1),
+(152, 'Bangkok sur le fleuve', 'Ballade en bateau', NULL, '2017-08-15 00:00:00', 2008, 'Thaïlande', 'Bangkok', '9-BKK-5-2008.jpg', 1),
+(153, 'Bangkok temple', NULL, 'Le temple ou il y a le grand boudha allongé.', '2017-08-15 00:00:00', 2008, 'Thaïlande', 'Bangkok', '10-BKK-6-2008.jpg', 1),
+(156, 'Cambodge 2008', 'Attention, passage d’éléphants!', NULL, '2017-08-15 00:00:00', 2008, 'Cambodge', 'Siem Reap', '13-Camb-1-2008.jpg', 1),
+(157, 'Angkor Wat', 'Vieux temple', 'Il fesait une chaleur épouvantable et l\'air était saturé d\'humidité. On pouvait essorer nos vêtements!', '2017-08-15 00:00:00', 2008, 'Cambodge', 'Siem Reap', '14-Camb-2-2008.jpg', 1),
+(159, 'Cambodge, photo 4', 'Dans un couloir d\'un vieux temple à Angkor Wat.', NULL, '2017-08-15 00:00:00', 2008, 'Cambodge', 'Siem Reap', '15-Camb-3-2008.jpg', 1),
+(161, 'Angkor Wat - voyage 2008', 'La cour d\'un palais', NULL, '2017-08-15 00:00:00', 2008, 'Cambodge', 'Siem Reap', '17-Camb-5-2008.jpg', 1),
+(164, 'Vue sur le lac Niassa...', 'depuis la fenêtre de la petite case que j\'occupe.', 'Le lac Niassa est en réalité le lac Malawi sur les cartes du monde. Il est appellé différemment selon que l\'on est au Mozambique ou partout ailleurs dans le monde.', '2017-08-15 00:00:00', 2009, 'Mozambique', 'Chuwanga', '21-Mozambique-2-2009.jpg', 1),
+(165, 'Vue sur le lac Niassa', NULL, 'En ballade avant de partir de cette région et de retrouver Paris.', '2017-08-15 00:00:00', 2009, 'Mozanbique', 'Metangula', '22-Mozambique-3-2009.jpg', 1),
+(166, 'Habitations à Metangula', NULL, 'Il y a de plus belles maisons de style colonial portugais mais pas sur cette photo.', '2017-08-15 00:00:00', 2009, 'Mozambique', 'Metangula', '23-Mozambique-4-2009.jpg', 1),
+(167, 'Un bateau de transport de fret et de passagers sur le lac Niassa', NULL, 'Ce bateau a été mis en service dans les années 1950 et il flotte toujours!', '2017-08-15 00:00:00', 2009, 'Mozambique', 'Metangula', '24-Mozambique-5-2009.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -668,7 +682,7 @@ ALTER TABLE `comments_story`
 -- AUTO_INCREMENT pour la table `pictures`
 --
 ALTER TABLE `pictures`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
 --
 -- AUTO_INCREMENT pour la table `tags_picture`
 --

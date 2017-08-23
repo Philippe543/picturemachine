@@ -1,43 +1,13 @@
-/* affichage var_dump */
-pre {
-    margin-top: 20px;
-}
-
-/* FOOTER */
-section#f_links{
-    padding: 50px;
-}
-
-ul#menu_bas{
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
-    float: none;
-}
-ul#menu_bas li{
-    display: inline;
-}
-
-/* Images */
-img.img-responsive:hover{
-    transform: scale(1.4);
-}
-
-
-
 /* Tentative d'afficher les liens de la navbar avant le début du scroll */
+
 .navbar-custom .nav li a {
     color: #fed136;
 }
 
 .navbar-custom {
-    background: #222222;    
+    background: #222222;
 }
 
-
-
-
-/* user.php */
 
 section {
     padding: 10px 0px;

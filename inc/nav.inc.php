@@ -248,15 +248,17 @@ $nav_admin = '
             <li>
                <a class="page-scroll" href="index.php#galeries">Galeries</a>
             </li>
+            <!--
             <li>
               <a class="page-scroll" href="<?php echo URL; ?>index.php#story">Story</a>
-            </li>
+            </li>-->
             <li>
               <a class="page-scroll" href="<?php echo URL; ?>index.php#team">&#201;quipe</a>
             </li>
-            <li><!-- va devenir un modal -->
+            <!--
+            <li>
               <a class="page-scroll" href="#contact">Contact</a>
-            </li>
+            </li>-->
 
             <!-- ul différente selon que l'on est connecté ou pas -->
             <ul class="nav navbar-nav navbar-right navbar-btn">             
@@ -273,8 +275,8 @@ $nav_admin = '
               <?php
                     } else { // si user connecté
               ?>
-                  <a href="<?php echo URL; ?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> Mon compte</a>
-                  <a href="<?php echo URL; ?>?action=deconnexion" class="btn" type="submit"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a>
+                  <a href="<?php echo URL; ?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> MON COMPTE</a>
+                  <a href="<?php echo URL; ?>?action=deconnexion" class="btn" type="submit"><span class="glyphicon glyphicon-log-out"></span> D&#201;CONNEXION</a>
             </ul><!-- fermeture ul si user connecté -->
                 <?php // Menu supp réservé aux admins
                     if(utilisateur_est_admin())

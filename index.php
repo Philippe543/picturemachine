@@ -342,7 +342,6 @@ require("inc/nav.inc.php");
                     <div class="team-member">
                         <img src="img/team/avatar.png" class="img-responsive img-circle" alt="">
                         <h4>Alexandre Largent</h4>
-                        <p class="text-muted">?</p>
                         <ul class="list-inline social-buttons">
                             <li><a href="#"><i class="fa fa-twitter"></i></a>
                             </li>
@@ -357,7 +356,6 @@ require("inc/nav.inc.php");
                     <div class="team-member">
                         <img src="img/team/avatar.png" class="img-responsive img-circle" alt="">
                         <h4>Alexandre Fernandes</h4>
-                        <p class="text-muted">?</p>
                         <ul class="list-inline social-buttons">
                             <li><a href="#"><i class="fa fa-twitter"></i></a>
                             </li>
@@ -372,7 +370,6 @@ require("inc/nav.inc.php");
                     <div class="team-member">
                         <img src="img/team/avatar.png" class="img-responsive img-circle" alt="">
                         <h4>Tanguy Manas</h4>
-                        <p class="text-muted">?</p>
                         <ul class="list-inline social-buttons">
                             <li><a href="#"><i class="fa fa-twitter"></i></a>
                             </li>
@@ -387,7 +384,6 @@ require("inc/nav.inc.php");
                     <div class="team-member">
                         <img src="img/team/avatar.png" class="img-responsive img-circle" alt="">
                         <h4>Philippe Peron</h4>
-                        <p class="text-muted">?</p>
                         <ul class="list-inline social-buttons">
                             <li><a href="#"><i class="fa fa-twitter"></i></a>
                             </li>
