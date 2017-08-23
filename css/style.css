@@ -16,8 +16,15 @@ ul#menu_bas{
 }
 ul#menu_bas li{
     display: inline;
-    width: 33%;
 }
+
+/* Images */
+img.img-responsive:hover{
+    transform: scale(1.4);
+}
+
+
+
 
 
 

@@ -257,7 +257,7 @@ require("inc/nav.inc.php");
                             <label for="date_picture1">Année de début</label>
                             <select name="date_picture1" id="date_picture1" class="form-control">
                             <option></option>';
-                                for($i= date('Y'); $i >= 1900; $i--){
+                                for($i= date('Y'); $i >= 1850; $i--){
                                     echo '<option>' . $i . '</option>';
                                 }
                             /*while($date_picture1 = $liste_year->fetch(PDO::FETCH_ASSOC))
@@ -271,7 +271,7 @@ require("inc/nav.inc.php");
                                     <label for="date_picture2">Année de fin</label>
                                     <select name="date_picture2" id="date_picture2" class="form-control">
                                     <option></option>';
-                                        for($i = date('Y'); $i >= 1900; $i--){
+                                        for($i = date('Y'); $i >= 1850; $i--){
                                             echo '<option>' . $i . '</option>';
                                         }
                             /*while($date_picture2 = $liste_year->fetch(PDO::FETCH_ASSOC))
@@ -296,7 +296,7 @@ require("inc/nav.inc.php");
         
                 <!-- GALERIE -->
 				<div class="col-sm-10">
-					<?php // afficher toutes les photos dans cette page par exemple: un block avec image + titre + prix produit
+					<?php // afficher toutes les photos
 			
 					echo '<div class="row">';
 					$compteur = 0;
@@ -312,7 +312,7 @@ require("inc/nav.inc.php");
 						//echo '<div class="panel-heading"><img src="' . URL . 'img/timestorrylogo.png" class="img-responsive" /></div>';
 						echo '<div class="panel-body text-center">';
 						echo '<h5>' . $article['title'] . '</h5>';
-                        echo '<img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /><br>';
+                        echo '<a href="affichage_photo.php?id=' . $article['id'] . '" class="btn btn-primary"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
                         echo $article['date_picture'];
 						//echo '<a href="fiche_article.php?id=' . $article['id'] . '" class="btn btn-primary">Voir la photo</a>';
 						

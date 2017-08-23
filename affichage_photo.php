@@ -5,7 +5,7 @@ require("inc/init.inc.php");
 
 if(empty($_GET['id']) || !is_numeric($_GET['id']))
 {
-	header("location:galerie_anciennement_index.php");
+	header("location:index.php#galeries");
 }
 
 $id = $_GET['id'];
@@ -18,7 +18,7 @@ $recup_photo->execute();
 if($recup_photo->rowCount() < 1)
 {
 	// S'il y a moin d'une ligne alors la reponse de la bdd est vide donc on redirige vers l'accueil
-	header("location:galerie_anciennement_index.php");
+	header("location:index.php#galeries");
 }
 
 $photo = $recup_photo->fetch(PDO::FETCH_ASSOC);
@@ -63,12 +63,11 @@ require("inc/nav.inc.php");
 						<?php
 							echo '<h2>' . $photo['title'] . '</h2><hr />';
 							echo '<img src="' . URL . 'photo/' . $photo['photo'] . '" class="img-responsive" />';
-							echo '<p><b class="label-fiche">header: </b>' . $photo['header'] . '</p>';
-							echo '<p><b class="label-fiche">Content: </b>' . $photo['content'] . '</p>';
-							echo '<p><b class="label-fiche">date d\'enregistrement: </b>' . $photo['date_record'] . '</p>';
-							echo '<p><b class="label-fiche">date la prise de la photo: </b>' . $photo['date_picture'] . '</p>';
-							echo '<p><b class="label-fiche">pays: </b>' . $photo['country'] . '</p>';
-							echo '<p><b class="label-fiche">ville: </b>' . $photo['city'] . '</p>';
+							echo '<p>' . $photo['header'] . '</p>';
+							echo '<p><b class="label-fiche">Descritpion	: </b>' . $photo['content'] . '</p>';
+							echo '<p><b class="label-fiche">Année : </b>' . $photo['date_picture'] . '</p>';
+							echo '<p><b class="label-fiche">Pays : </b>' . $photo['country'] . '</p>';
+							echo '<p><b class="label-fiche">Ville : </b>' . $photo['city'] . '</p>';
 						?>	
 					</div>
 					
@@ -112,7 +111,7 @@ require("inc/nav.inc.php");
 							echo '<hr>';
 							*/
 							//echo '<a href="galerie_anciennement_index.php?categorie=' .$article['categorie']. '" class="btn btn-success form-control">Retour vers votre sélection</a>';
-							echo '<a href="galerie_anciennement_index.php" class="btn btn-success form-control">Retour vers la galerie d\'images</a>';
+							echo '<a href="index.php#galeries" class="btn btn-success form-control">Retour vers la galerie d\'images</a>';
 							
 						?>
 					</div>
