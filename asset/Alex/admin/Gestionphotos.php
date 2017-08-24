@@ -252,7 +252,7 @@ require("../inc/nav.inc.php");
 
     <div class="container">
 
-      <div class="starter-template" style="margin-top: 150px;">
+      <div class="starter-template">
         <h1>Gestion photo</h1>
 		<?= $message; ?>
 		<hr />

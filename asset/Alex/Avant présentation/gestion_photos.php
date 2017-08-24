@@ -123,7 +123,7 @@ isset($_POST['keywords']))
 	$keywords=strtoupper($_POST['keywords']);
 	
 
-	
+	var_dump($message.'test3', $erreur,$id);
 //*************************************************************************************************************
 // FIN GESTION DES PHOTOS ?? PAS VRAIMENT
 //*************************************************************************************************************	
@@ -197,7 +197,8 @@ isset($_POST['keywords']))
 	//explosion de la chaine keywords avec ', ' comme séparateur
 	// $keywords est définie ligne 123 lors de l'enregistrement d'une photo 
 	$multitags= explode(", ",$keywords);
-	
+	// NE S'AFFICHE NULLE PART QUAND ON EST PAS EN INSERTION ?? A VOIR
+	echo '<pre>$multitags :'; var_dump($multitags); echo '</pre>';
 
 	//Insertion des photos
 	if(!$erreur)		
@@ -243,159 +244,168 @@ isset($_POST['keywords']))
 // la ligne suivante commence les affichages dans la page
 require("../inc/header.inc.php");
 require("../inc/nav.inc.php");
-//echo'<pre>$_GET : '; print_r($_GET); echo '</pre>';
-////echo'<pre>$_POST : '; print_r($_POST) ;echo '</pre>';
-//echo'<pre>$_FILES : '; print_r($_FILES); echo '</pre>';
-//echo'<pre>$_SESSION[\'utilisateur\' : '; print_r($_SESSION['utilisateur']); echo '</pre>';
+/*
+echo'<pre>$_GET : '; print_r($_GET); echo '</pre>';
+echo'<pre>$_POST : '; print_r($_POST) ;echo '</pre>';
+echo'<pre>$_FILES : '; print_r($_FILES); echo '</pre>';
+echo'<pre>$_SESSION[\'utilisateur\' : '; print_r($_SESSION['utilisateur']); echo '</pre>';
+*/
 ?>
-  
-
-    <div class="container">
-
-      <div class="starter-template" style="margin-top: 150px;">
-        <h1>Gestion photo</h1>
-		<?= $message; ?>
-		<hr />
-		<a href="?action=ajout" class="btn btn-info">Ajouter une photo</a>
-		<a href="?action=affichage" class="btn btn-info">Afficher les photos</a>
-      </div>
-		<?php // AFFICHAGE DES PHOTOS
-					if(isset($_GET['action']) && $_GET['action'] =='affichage' )
-			{
+ 
+<div class="row">
+	<div class="col-sm-3">
+		<form method="post" action="" enctype="multipart/form-data">  <!-- on rajoute enctype parce que l'on va demander de joindre une pièce jointe-->
+		
+			<input type="hidden" name="id" id="id" class="form-control" value="<?php echo $id; ?>">
 			
-			// récupération de l'id utilisateur dans une variable
-			$ida=$_SESSION['utilisateur']['id'];
-			// récupération du status de l'user dans une variable
-			$statusUser = $_SESSION['utilisateur']['status'];
-
-			if ($statusUser == 1 ){
-				$resultat = $pdo->query("SELECT * FROM pictures");
-			}
-			else{				
-				$resultat = $pdo->query("SELECT * FROM pictures WHERE users_id=$ida");			
-			}
-			
-			
-						echo '<hr>';
-						// première ligne du tableau pour le nom des colonnes
-						echo'<table class="table table-bordered">';
-							echo '<tr>';
-								// récupération du nombre de colonnes dans la requête:
-								$nb_col = $resultat->columnCount();
-
-								for($i = 0; $i< $nb_col; $i++)
-								{
-								//echo '<pre>'; print_r($resultat->getColumnMeta($i)); echo '</pre>'; echo '<hr />';
-								$colonne = $resultat->getColumnMeta($i); // on récupère les informations de la, colonne en cours afin ensuite de dem	ander le name.
-								echo '<th style="padding:10px;">' . $colonne['name'] . '</th>';
-								
-								}
-							echo'</tr>';
-						
-						// affichage des éléments du tableau
-						While($ligne =$resultat->fetch(PDO::FETCH_ASSOC))
-						{
-							echo '<tr>';
-								foreach($ligne AS $indice => $info)
-								{
-										if($indice == 'photo')
-										{
-											echo '<td style="padding:10px;"><img src=" '. URL . 'photo/'.$info .'" width="140" /></td>';
-											
-										}elseif($indice == "content") {
-											// lier la vue de la photo quand elle sera dsiponible
-											echo '<td>' . substr($info,0,40) . '..<a href="#">Voir la fiche de la photo</a></td>';
-										}
-										else
-										{
-											echo '<td style="padding:10px;">' .$info .'</td>';
-										}								
-								}
-								echo '<td><a href="?action=modification&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></a></td>';
-								echo '<td><a onclick="return(confirm(\'Etes vous sûr de vouloir supprimer cette photo\'));"  href="?action=suppression&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>';	
-							echo '</tr>';
-						}	
-
-						echo '</table>';
-			}
-		/* pas indispensable, je crois
-		?>	  
-		<?php
-		*/
-			if(isset($_GET['action']) && ($_GET['action'] =='ajout' || $_GET['action'] == 'modification'))
-			{
-		?>
-	  
-	    <div class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-				<form method="post" action="" enctype="multipart/form-data">  <!-- on rajoute enctype parce que l'on va demander de joindre une pièce jointe-->
-				
-					<input type="hidden" name="id" id="id" class="form-control" value="<?php echo $id; ?>">
-					
-					<div class="form-group">
-						<label for="title">title<span style="color:red;"></span></label>
-						<input type="text" name="title" id="title" class="form-control" placeholder="title" value="<?php echo $title; ?>">
-					</div>								
-					<div class="form-group">
-						<label for="header">header<span style="color:red;"></span></label>
-						<input type="text" name="header" id="header" class="form-control" placeholder="header" value="<?php echo $header; ?>">
-					</div>
-					<div class="form-group">
-						<label for="content">content</label>
-						<input type="text" name="content" id="content" class="form-control" placeholder="content" value="<?php echo $content; ?>">
-					</div>
-					<div class="form-group">
-						<label for="date_picture">date de la photo</label>
-						<input type="date" name="date_picture" id="date_picture" class="form-control" placeholder="date de la photo" value="<?php echo $date_picture; ?>">
-					</div>
-					<div class="form-group">
-						<label for="country">pays</label>
-						<input type="text" name="country" id="country" class="form-control" placeholder="country" value="<?php echo $country; ?>">
-					</div>
-					<div class="form-group">
-						<label for="city">ville / lieu</label>
-						<input type="text" name="city" id="city" class="form-control" placeholder="ville / lieu" value="<?php echo $city; ?>">
-					</div>
-					
-					<?php
-					//affichage de la photo actuelle dans le cas d'une modification d'article
-						if(isset($photo_actuel)) //si cette variable existe alors nous sommes dans le cas d'une modification
-						{
-							echo '<div class="form-group">';
-							echo '<label>Photo actuelle</label>';
-							echo '<img src="'.URL . 'photo/' . $photo_actuelle .'" class="img-thumbnail" width="210" />';
-							// On crée un champs caché qui contiendra le nom de la photo afin de le récupérer lors de la validation du formulaire.
-							echo '<input type="hidden" name="ancienne_photo" value="' .$photo_actuelle . '"/>';
-							echo '</div>';
-						}					
-					?>
-										
-					
-					<div class="form-group">
-						<label for="photo">photo</label>
-						<input type="file" name="photo" id="photo" class="form-control" value="">
-					</div>	
-					
-					
-					<div class="form-group">
-						<label for="keywords">entrer des mots clefs séparés par ", "  (virgule espace)</label>
-						<input type="text" name="keywords" id="keywords" class="form-control" value="<?php
-						/* Je vais imploder $keywords et rajouter des ", " - ca va le faire
-						ou peut-être les appeler par une requête (reflexion reflexion) */		 
-						?>">
-					</div>			
-					
-					
-					
-					<div class="form-group">
-						<button class="form-control btn btn-success">valider</button>					
-					</div>	
-				
-				</form>
+			<div class="form-group">
+				<label for="title">Titre<span style="color:red;"></span></label>
+				<input type="text" name="title" id="title" class="form-control" placeholder="Titre" value="<?php echo $title; ?>">
+			</div>								
+			<div class="form-group">
+				<label for="header">Sous titre<span style="color:red;"></span></label>
+				<input type="text" name="header" id="header" class="form-control" placeholder="Sous Titre" value="<?php echo $header; ?>">
 			</div>
-	  
-	  
-		</div>
+			<div class="form-group">
+				<label for="content">Description</label>
+				<input type="text" name="content" id="content" class="form-control" placeholder="Description" value="<?php echo $content; ?>">
+			</div>
+			<div class="form-group">
+				<label for="date_picture">Prise le</label>
+				<input type="date" name="date_picture" id="date_picture" class="form-control" placeholder="Prise le" value="<?php echo $date_picture; ?>">
+			</div>
+			<div class="form-group">
+				<label for="country">Pays</label>
+				<input type="text" name="country" id="country" class="form-control" placeholder="Pays" value="<?php echo $country; ?>">
+			</div>
+			<div class="form-group">
+				<label for="city">Ville, Lieu</label>
+				<input type="text" name="city" id="city" class="form-control" placeholder="Ville, Lieu" value="<?php echo $city; ?>">
+			</div>
+			
+			<?php
+			//affichage de la photo actuelle dans le cas d'une modification d'article
+				if(isset($photo_actuel)) //si cette variable existe alors nous sommes dans le cas d'une modification
+				{
+					echo '<div class="form-group">';
+					echo '<label>Photo actuelle</label>';
+					echo '<img src="'.URL . 'photo/' . $photo_actuelle .'" class="img-thumbnail" width="210" />';
+					// On crée un champs caché qui contiendra le nom de la photo afin de le récupérer lors de la validation du formulaire.
+					echo '<input type="hidden" name="ancienne_photo" value="' .$photo_actuelle . '"/>';
+					echo '</div>';
+				}					
+			?>
+								
+			
+			<div class="form-group">
+				<label for="photo">photo</label>
+				<input type="file" name="photo" id="photo" class="form-control" value="">
+			</div>	
+			
+			
+			<div class="form-group">
+				<label for="keywords">Entrer des mots clés séparés par ", "  ( une virgule suivi  d'un espace)</label>
+				<input type="text" name="keywords" id="keywords" class="form-control" value="<?php
+				/* Je vais imploder $keywords et rajouter des ", " - ca va le faire
+				ou peut-être les appeler par une requête (reflexion reflexion) */		 
+				?>">
+			</div>			
+			
+			
+			
+			<div class="form-group">
+				<button class="form-control btn btn-success">valider</button>					
+			</div>	
+		
+		</form>
+	</div>
+
+
+
+
+	<div class="col-sm-9">
+		<div class="container">
+			<div class="starter-template">
+				<div style="text-align:center">
+						<h1><span class="glyphicon glyphicon-cog" style="color:#fed136;"></span><i> GESTION PHOTOS </i><span class="glyphicon glyphicon-camera" style="color:#fed136;"></h1>
+				</div> 
+				<?= $message;?>
+				<br>  <br>  <br> 
+			</div>   
+			<a href="?action=ajout" class="btn btn-primary">Ajouter une photo</a>
+			
+		
+			<?php // AFFICHAGE DES PHOTOS
+						if(isset($_GET['action']) && $_GET['action'] =='affichage' )
+				
+				
+				// récupération de l'id utilisateur dans une variable
+				$ida=$_SESSION['utilisateur']['id'];
+				// récupération du status de l'user dans une variable
+				$statusUser = $_SESSION['utilisateur']['status'];
+
+				if ($statusUser == 1 ){
+					$resultat = $pdo->query("SELECT * FROM pictures");
+				}
+				else{				
+					$resultat = $pdo->query("SELECT * FROM pictures WHERE users_id=$ida");			
+				}
+				// a effacer plus tard echo '<pre>$resultat : '; var_dump($resultat); echo'</pre>';
+				
+							echo '<br/>';
+							// première ligne du tableau pour le nom des colonnes
+							echo'<table class="table table-bordered" style="text-align:center;">';
+								echo '<tr style="background-color:#222;color:#fed136;">';
+									// récupération du nombre de colonnes dans la requête:
+									$nb_col = $resultat->columnCount();
+
+									for($i = 0; $i< $nb_col; $i++)
+									{
+									//echo '<pre>'; print_r($resultat->getColumnMeta($i)); echo '</pre>'; echo '<hr />';
+									$colonne = $resultat->getColumnMeta($i); // on récupère les informations de la, colonne en cours afin ensuite de dem	ander le name.
+									echo '<th style="padding:10px;">' . $colonne['name'] . '</th>';
+									
+									}
+								echo'</tr>';
+							
+							// affichage des éléments du tableau
+							While($ligne =$resultat->fetch(PDO::FETCH_ASSOC))
+							{
+								echo '<tr>';
+									foreach($ligne AS $indice => $info)
+									{
+											if($indice == 'photo')
+											{
+												echo '<td style="padding:10px;"><img src=" '. URL . 'photo/'.$info .'" width="140" /></td>';
+												
+											}elseif($indice == "content") {
+												// lier la vue de la photo quand elle sera dsiponible
+												echo '<td>' . substr($info,0,40) . '..<a href="#">Voir la fiche de la photo</a></td>';
+											}
+											else
+											{
+												echo '<td style="padding:10px;">' .$info .'</td>';
+											}								
+									}
+									echo '<td><a href="?action=modification&id=' . $ligne['id'] . '" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></a></td>';
+									echo '<td><a onclick="return(confirm(\'Etes vous sûr de vouloir supprimer cette photo\'));"  href="?action=suppression&id=' . $ligne['id'] . '" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>';	
+								echo '</tr>';
+							}	
+
+							echo '</table>';
+			
+			/* pas indispensable, je crois
+			?>	  
+			<?php
+			*/
+
+				if(isset($_GET['action']) && ($_GET['action'] =='ajout' || $_GET['action'] == 'modification'))
+				{
+			?>
+	</div>
+</div>
+
+	    
 	  <?php
 			} // fin if(isset($_GET['action']) && $_GET['action'] =='ajout' )
 		?>	  

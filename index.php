@@ -317,9 +317,9 @@ require("inc/nav.inc.php");
                         
                         // si on recherche par tags, alors la requete change et on appelle $article['pictures_id']
                         if(isset($article['pictures_id'])) {
-                            echo '<a href="affichage_photo.php?id=' . $article['pictures_id'] . '" class="btn btn-primary"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
+                            echo '<a href="affichage_photo.php?id=' . $article['pictures_id'] . '" class="btn btn-primary" id="vignette"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
                         } else { // sinon...
-                            echo '<a href="affichage_photo.php?id=' . $article['id'] . '" class="btn btn-primary"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
+                            echo '<a href="affichage_photo.php?id=' . $article['id'] . '" class="btn btn-primary" id="vignette"><img src="' . URL . 'photo/' . $article['photo'] . '"  class="img-responsive" /></a><br>';
                         }
 
 

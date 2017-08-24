@@ -1,4 +1,5 @@
 <?php
+// Asset/Alex
 
 // code de déconnexion
 if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
@@ -7,10 +8,90 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
   header("location:index.php");
 }
 
+// Menu supp réservé aux admins
+$nav_admin = '
+<div id="navbar-collapse" class="collapse navbar-collapse">
+  <ul class="nav navbar-nav navbar navbar-inverse">
+      <li><a href="' . URL . 'admin/gestion_users.php"> GESTION UTILISATEURS</a></li>
+      <li><a href="' . URL . 'admin/gestion_photos.php"> GESTION PHOTOS</a></li>
+  </ul>
+</div>';
+?>
+<!-- Navigation -->
+<nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container">
+    <!-- Burger Menu pour l'affichage mobile -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+            </button>
+          <a class="navbar-brand page-scroll"  href="<?php echo URL; ?>index.php"><span class="fa fa-camera-retro"></span> TimeMachine</a> <!-- href="#page-top" -->
+        </div>
 
-/*---------------------------------------------------------------------
-                      CODE DE VERIFICATION
----------------------------------------------------------------------*/
+        <!-- AFFICHAGE DES LIENS QUAND PAS DE SCROLL A FAIRE -->
+        <!-- Collecter the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="hidden">
+              <a href="#page-top"></a>
+            </li>
+            <li>
+               <a href="<?php echo URL; ?>index.php#page-top">Accueil</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="<?php echo URL; ?>index.php#services">Services</a>
+            </li>
+            <li>
+               <a class="page-scroll" href="index.php#galeries">Galeries</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="<?php echo URL; ?>index.php#story">Story</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="<?php echo URL; ?>index.php#team">&#201;quipe</a>
+            </li>
+            <li><!-- va devenir un modal -->
+              <a class="page-scroll" href="#contact">Contact</a>
+            </li>
+
+            <!-- ul différente selon que l'on est connecté ou pas -->
+            <ul class="nav navbar-nav navbar-right navbar-btn">             
+              <?php 
+                    if(!utilisateur_est_connecte())
+                    {
+              ?>
+                <!-- diff de code a analyser -> pas de href dans les buttons -->
+                <!-- REACTIVER LES BOUTONS MODALS (faire le modal inscription) -->
+                <div class="btn-group">
+                      <!--
+                  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#connexion">Connexion</button>-->
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal"> CONNEXION</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sign-in-modal"> INSCRIPTION</button>
+                </div>
+            </ul><!-- fermeture ul si user non connecté -->
+
+              <?php
+                    } else { // si user connecté
+              ?>
+                  <a href="<?php echo URL; ?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> MON COMPTE</a>
+                  <a href="<?php echo URL; ?>?action=deconnexion" class="btn" type="submit"><span class="glyphicon glyphicon-log-out"></span> D&#201;CONNEXION</a>
+            </ul><!-- fermeture ul si user connecté -->
+                <?php // Menu supp réservé aux admins
+                    if(utilisateur_est_admin())
+                    {
+                      echo $nav_admin;
+                    }
+                ?>
+             <?php } //fin du else user connecté ?>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav><!-- fin NAVIGATION -->
+
+    <!-- code connexion - A METTRE EN HAUT DU FICHIER -->
+    <?php 
+    // CODE DE VERIFICATION
+
     // LOGIN-----------------------------------------------------------
     //Vérification de l'existence des indices du formulaire de login
     if(isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['login']))
@@ -26,7 +107,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
       
       if($verif_connexion->rowCount() > 0)
       {
-        //Création de la session
+        //si nous avons 1 ligne alors le pseudo et le mdp sont corrects
         $info_utilisateur = $verif_connexion->fetch(PDO::FETCH_ASSOC);
         $_SESSION['utilisateur'] = array();
         $_SESSION['utilisateur']['id'] = $info_utilisateur['id'];
@@ -37,7 +118,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
         $_SESSION['utilisateur']['email'] = $info_utilisateur['email'];
         $_SESSION['utilisateur']['status'] = $info_utilisateur['status'];
                
-        
+        //header("location:index.php");
         ?>
         <script>
         window.location.assign('index.php');
@@ -87,7 +168,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
       $password = $_POST['password'];
       $passwordcheck = $_POST['passwordcheck'];
 
-      //Contrôle sur le nom
+      ///////////////////////////Contrôle sur le nom///////////////////////////////////////////////
       // contrôle sur la taille du lastname (entre 2 et 50 caractères inclus)
       if (iconv_strlen($lastname)< 2 || iconv_strlen($lastname)>50 )
       {
@@ -104,7 +185,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
         $erreur= true;
       }
             
-      //Contrôle sur le prénom
+      ///////////////////////////Contrôle sur le prénom///////////////////////////////////////////////
       // contrôle sur la taille du lastname (entre 2 et 50 caractères inclus)
       if (iconv_strlen($firstname)< 2 || iconv_strlen($firstname)>50 )
       {
@@ -121,7 +202,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
         $erreur= true;
       }
 
-      //contrôle du Pseudo
+      ////////////////////////////contrôle du Pseudo//////////////////////////////////////////////
       // contrôle sur la taille du pseudo (entre 4 et 14 caractères inclus)
 
       if (iconv_strlen($pseudo)< 4 || iconv_strlen($pseudo)>14 )
@@ -137,7 +218,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
         $message.='<div class="alert alert-danger" role="alert" style="margin-top:20px;">Attention, caractères non autorisés dans le nom.<br />Caractères autorisés : A-Z et 0-9, - _ </div>';
         $erreur= true;
       }
-      //Vérification de l'email
+      ////////////////Vérification de l'email ///////////////////////
       //vérification de la saisie de l'email
       if(!filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($email))
       {
@@ -145,7 +226,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
         $erreur= true;
       }
       
-      // Vérification de la disponibilité de l'email en BDD.
+      /////////////// Vérification de la disponibilité de l'email en BDD.
       $verif_email =$pdo->prepare("SELECT * FROM users WHERE email =:email");
       $verif_email->bindParam(":email", $email, PDO::PARAM_STR);
       $verif_email->execute();
@@ -159,7 +240,7 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
       
       
 
-      //Vérification de la disponibilité du pseudo en BDD.
+      /////////////// Vérification de la disponibilité du pseudo en BDD.
       $verif_pseudo =$pdo->prepare("SELECT * FROM users WHERE pseudo =:pseudo");
       $verif_pseudo->bindParam(":pseudo", $pseudo, PDO::PARAM_STR);
       $verif_pseudo->execute();
@@ -168,19 +249,22 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
       {
         //si l'on obtient au moins 1 ligne de résultat alors le pseudo est déjà pris.
         $message .= '<div class="alert alert-danger" role="alert" style="margin-top:20px;">Attention, le pseudo n\'est pas disponible<br />Veuillez utiliser un autre email</div>';
-        $erreur = true;		
+        $erreur= true;		
       }
       
-      //Vérification du mot de passe
+      ///Vérification du mot de passe
       if($password !=$passwordcheck)
       {
         $message .= '<div class="alert alert-danger" role="alert" style="margin-top:20px;">Attention, le mot de passe de confirmation n\'est pas identique au mot de passe initiale<br />Veuillez vérifier votre mot de passe</div>';
-        $erreur = true;		
+        $erreur= true;		
       }
       
-      //Insertion dans la BDD
-      if($erreur != true) // si $erreur est différent de true alors les contrôles préalables sont ok !
-      {          
+      //////////////////Insertion dans la BDD////////////////////////////
+      if($erreur !== true) // si $erreur est différent de true alors les contrôles préalables sont ok !
+      {
+        //Pour crypter (hachage) le mdp
+        //$password=password_hash($mdp,PASSWORD_DEFAULT); (c'est une possibilité)
+          
         $enregistrement =$pdo->prepare("INSERT INTO users (lastname, firstname, gender, pseudo, email, password, status) VALUES (:lastname, :firstname, :gender, :pseudo, :email, :password, 0)");
         $enregistrement->bindParam(":lastname", $lastname, PDO::PARAM_STR);
         $enregistrement->bindParam(":firstname", $firstname, PDO::PARAM_STR);
@@ -204,95 +288,6 @@ if(isset($_GET['action']) && $_GET['action'] =='deconnexion' )
 
 
     //fin INSCRIPTION-------------------------------------------------
-
-/*---------------------------------------------------------------------
-                      FIN CODE DE VERIFICATION
----------------------------------------------------------------------*/
-
-// Menu supp réservé aux admins
-$nav_admin = '
-<div id="navbar-collapse" class="collapse navbar-collapse">
-  <ul class="nav navbar-nav navbar navbar-inverse">
-      <li><a href="' . URL . 'admin/stats.php"> STATS</a></li>
-      <li><a href="' . URL . 'admin/gestion_users.php"> GESTION UTILISATEURS</a></li>
-      <li><a href="' . URL . 'admin/gestion_galeries.php"> GESTION GALERIES</a></li>
-      <li><a href="' . URL . 'admin/gestionphotos.php"> GESTION PHOTOS</a></li>
-      <li><a href="' . URL . 'admin/gestion_produit.php"> GESTION COMMENTAIRES</a></li>
-  </ul>
-</div>';
-?>
-<!-- Navigation -->
-<nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
-  <div class="container">
-    <!-- Burger Menu pour l'affichage mobile -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-              <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-            </button>
-          <a class="navbar-brand page-scroll"  href="<?php echo URL; ?>index.php"><span class="fa fa-camera"></span> TimeMachine</a> <!-- href="#page-top" -->
-        </div>
-
-        <!-- AFFICHAGE DES LIENS QUAND PAS DE SCROLL A FAIRE -->
-        <!-- Collecter the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="hidden">
-              <a href="#page-top"></a>
-            </li>
-            <li>
-               <a href="<?php echo URL; ?>index.php#page-top">Accueil</a>
-            </li>
-            <li>
-              <a class="page-scroll" href="<?php echo URL; ?>index.php#services">Services</a>
-            </li>
-            <li>
-               <a class="page-scroll" href="index.php#galeries">Galeries</a>
-            </li>
-            <!--
-            <li>
-              <a class="page-scroll" href="<?php echo URL; ?>index.php#story">Story</a>
-            </li>-->
-            <li>
-              <a class="page-scroll" href="<?php echo URL; ?>index.php#team">&#201;quipe</a>
-            </li>
-            <!--
-            <li>
-              <a class="page-scroll" href="#contact">Contact</a>
-            </li>-->
-
-            <!-- ul différente selon que l'on est connecté ou pas -->
-            <ul class="nav navbar-nav navbar-right navbar-btn">             
-              <?php 
-                    if(!utilisateur_est_connecte())
-                    {
-              ?>                
-                <div class="btn-group">                  
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Connexion</button>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sign-in-modal">Inscription</button>
-                </div>
-            </ul><!-- fermeture ul si user non connecté -->
-
-              <?php
-                    } else { // si user connecté
-              ?>
-                  <a href="<?php echo URL; ?>users.php" class="btn btn-basic" type="submit"><span class="glyphicon glyphicon-user"></span> MON COMPTE</a>
-                  <a href="<?php echo URL; ?>?action=deconnexion" class="btn" type="submit"><span class="glyphicon glyphicon-log-out"></span> D&#201;CONNEXION</a>
-            </ul><!-- fermeture ul si user connecté -->
-                <?php // Menu supp réservé aux admins
-                    if(utilisateur_est_admin())
-                    {
-                      echo $nav_admin;
-                    }
-                ?>
-             <?php } //fin du else user connecté ?>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav><!-- fin NAVIGATION -->
-
-    <!-- code connexion - A METTRE EN HAUT DU FICHIER -->
-    <?php 
-    
     ?>
     
     <!-- affichage modal connexion -->
@@ -302,7 +297,7 @@ $nav_admin = '
             <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="loginmodal-container">
-                        <h3><span style="color:#337ab7; text-align=center;"><i>Connectez-vous</i></span></h3><br>
+                        <h3><span style="color:#337ab7; text-align=center;"><i>Connectez-vous</i></h3><br>
                             <form method="post" action="">
                                 <div class="form-group">
                                     <input type="text" name="pseudo" id="pseudo" class="form-control" placeholder="PSEUDO" style="font-style:italic;" />
@@ -312,7 +307,7 @@ $nav_admin = '
                                 </div>
                                 <div class="form-group">
                                     <!-- rajout form-control -->
-                                    <button type="submit" name="login" class="btn btn-primary form-control" >Connexion</button>
+                                    <button type="submit" name="login" class="btn btn-primary form-control" >Connexion</span>
                                 </div>
                             </form>
                     </div>
@@ -329,7 +324,7 @@ $nav_admin = '
             <div class="modal fade" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="loginmodal-container">
-                        <h3><span style="color:#337ab7; text-align=center;"><i>Inscrivez-vous</i></span></h3><br>
+                        <h3><span style="color:#337ab7; text-align=center;"><i>Inscrivez-vous</i></h3><br>
 
                             <!-- début formulaire -->
                             <form method="post" action="">
